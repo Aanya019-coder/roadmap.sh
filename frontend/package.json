@@ -15,9 +15,11 @@
     "@types/react-dom": "^19.2.3",
     "@xyflow/react": "^12.10.1",
     "astro": "^5.17.1",
+    "lucide-react": "^0.577.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-markdown": "^10.1.0",
+    "recharts": "^3.7.0",
     "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.2.1"
   }
