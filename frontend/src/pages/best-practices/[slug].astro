@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import RoadmapPageApp from '../../components/roadmap/RoadmapPageApp';
+import apiSecurityData from '../../data/best-practices/api-security.json';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'api-security' }, props: { data: apiSecurityData } }
+  ];
+}
+
+const { slug } = Astro.params;
+const { data } = Astro.props;
+
+// Mock content map since we don't have separated markdown files for these nodes right now.
+const contentMap = {
+  "https": "### Use HTTPS Everywhere\n\nEnsure that all API endpoints are served over TLS (HTTPS). This prevents Man-in-the-middle (MITM) attacks and ensures data privacy in transit.",
+  "auth": "### Implement Robust Authentication\n\nUse OAuth 2.0, OpenID Connect, or JSON Web Tokens (JWT) for authentication. Never use Basic Auth over HTTP and avoid custom authentication protocols.",
+  "rate-limit": "### Implement Rate Limiting\n\nLimit the number of requests a user can make to your API within a given timeframe. This helps prevent Denial of Service (DoS) attacks and brute-forcing.",
+  "validation": "### Validate Output and Input\n\nNever trust user input. Use strict type-checking and validation libraries to ensure data is exactly what you expect. Also, strip sensitive information from response payloads."
+};
+---
+
+<Layout title={`${data.title} | roadmap.sh`} description={data.description}>
+  <div style="display: flex; flex-direction: column; height: 100vh; overflow: hidden;">
+    <RoadmapPageApp 
+      client:only="react" 
+      roadmapData={data} 
+      contentMap={contentMap} 
+      roadmapId={`best-practice-${slug}`} 
+    />
+  </div>
+</Layout>

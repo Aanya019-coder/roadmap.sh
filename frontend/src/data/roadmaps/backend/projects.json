@@ -1,0 +1,36 @@
+[
+    {
+        "id": "be-todo-api",
+        "title": "RESTful Todo API",
+        "difficulty": "Beginner",
+        "description": "Create a simple RESTful API for managing tasks. Include basic CRUD endpoints, proper HTTP status codes, and store the data in memory or a simple SQLite database.",
+        "links": [
+            "http",
+            "rest",
+            "crud"
+        ]
+    },
+    {
+        "id": "be-auth-service",
+        "title": "Authentication Service",
+        "difficulty": "Intermediate",
+        "description": "Build an authentication service that supports user registration, login, and JWT-based token issuance. Password should be hashed securely before storing in a database.",
+        "links": [
+            "auth",
+            "jwt",
+            "security",
+            "database"
+        ]
+    },
+    {
+        "id": "be-message-queue",
+        "title": "Background Job Processing",
+        "difficulty": "Advanced",
+        "description": "Implement a system that queues heavy background jobs (like sending emails or processing images) using Redis and a message broker like RabbitMQ or BullMQ.",
+        "links": [
+            "redis",
+            "message-queue",
+            "background-jobs"
+        ]
+    }
+]

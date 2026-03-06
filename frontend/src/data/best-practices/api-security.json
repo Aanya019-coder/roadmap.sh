@@ -1,0 +1,64 @@
+{
+    "id": "api-security",
+    "title": "API Security Best Practices",
+    "description": "Essential best practices for securing APIs.",
+    "nodes": [
+        {
+            "id": "https",
+            "label": "Use HTTPS Everywhere",
+            "type": "topic",
+            "position": {
+                "x": 0,
+                "y": 0
+            },
+            "style": "checklist"
+        },
+        {
+            "id": "auth",
+            "label": "Implement Robust Authentication",
+            "type": "topic",
+            "position": {
+                "x": 0,
+                "y": 80
+            },
+            "style": "checklist"
+        },
+        {
+            "id": "rate-limit",
+            "label": "Implement Rate Limiting",
+            "type": "topic",
+            "position": {
+                "x": 0,
+                "y": 160
+            },
+            "style": "checklist"
+        },
+        {
+            "id": "validation",
+            "label": "Validate Output and Input",
+            "type": "topic",
+            "position": {
+                "x": 0,
+                "y": 240
+            },
+            "style": "checklist"
+        }
+    ],
+    "edges": [
+        {
+            "id": "e1",
+            "source": "https",
+            "target": "auth"
+        },
+        {
+            "id": "e2",
+            "source": "auth",
+            "target": "rate-limit"
+        },
+        {
+            "id": "e3",
+            "source": "rate-limit",
+            "target": "validation"
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PricingCards from '../components/premium/PricingCards';
+---
+
+<Layout title="Premium Plans | roadmap.sh">
+  <div class="container" style="padding: 6rem 1.5rem; text-align: center;">
+    <div style="max-width: 800px; margin: 0 auto 5rem;">
+        <h1 style="font-size: 3.5rem; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 1.5rem;">Upgrade your career.</h1>
+        <p style="font-size: 1.25rem; color: #a3a3a3; line-height: 1.6;">Join thousands of developers using AI and community roadmaps to reach their goals faster.</p>
+    </div>
+
+    <PricingCards client:load />
+
+    <div style="margin-top: 6rem; padding-top: 6rem; border-top: 1px solid #1f1f1f;">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 3rem;">Frequently Asked Questions</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; text-align: left; max-width: 1000px; margin: 0 auto;">
+            <div>
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Can I cancel anytime?</h3>
+                <p style="color: #737373; font-size: 0.95rem;">Yes, you can cancel your subscription at any time from your settings page. You'll continue to have access until the end of your billing period.</p>
+            </div>
+            <div>
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">What's included in AI generation?</h3>
+                <p style="color: #737373; font-size: 0.95rem;">Pro users get unlimited courses, guides, and custom roadmaps powered by Gemini 1.5 Pro, including more detailed content and deeper personalization.</p>
+            </div>
+             <div>
+                <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem;">Do you offer student discounts?</h3>
+                <p style="color: #737373; font-size: 0.95rem;">We currently don't have a specific student plan, but our free tier is designed to be very generous for learners.</p>
+            </div>
+        </div>
+    </div>
+  </div>
+</Layout>

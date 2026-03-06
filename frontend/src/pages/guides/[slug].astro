@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const guides = await Astro.glob('../../data/guides/*.md');
+  return guides.map((guide) => {
+    const slug = guide.file.split('/').pop()?.replace('.md', '');
+    return {
+      params: { slug },
+      props: { guide },
+    };
+  });
+}
+
+const { guide } = Astro.props;
+const { Content, frontmatter } = guide;
+const date = new Date(frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<Layout title={`${frontmatter.title} | roadmap.sh`} description={frontmatter.description}>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": frontmatter.title,
+    "description": frontmatter.description,
+    "image": [
+      `https://roadmap.sh/og-image.png`
+    ],
+    "datePublished": frontmatter.date,
+    "author": [{
+        "@type": "Person",
+        "name": frontmatter.author,
+        "url": "https://roadmap.sh"
+      }]
+  })} />
+  <div class="container" style="max-width: 800px; padding: 4rem 1.5rem;">
+    <!-- Meta Info -->
+    <a href="/guides" style="color: var(--color-text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+      ← Back to Guides
+    </a>
+    
+    <div style="margin-bottom: 2rem;">
+      <span class="badge badge-blue" style="margin-bottom: 1rem; display: inline-block;">{frontmatter.type} Guide</span>
+      <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2;">{frontmatter.title}</h1>
+      <p style="color: var(--color-text-secondary); font-size: 1.25rem; margin-bottom: 1.5rem;">{frontmatter.description}</p>
+      
+      <div style="display: flex; align-items: center; gap: 1rem; color: var(--color-text-muted); font-size: 0.875rem; padding-bottom: 2rem; border-bottom: 1px solid var(--color-border);">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: #333; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;">
+            {frontmatter.author.charAt(0)}
+          </div>
+          <span>{frontmatter.author}</span>
+        </div>
+        <span>•</span>
+        <span>{date}</span>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <article class="markdown-body" style="font-size: 1.125rem; line-height: 1.8;">
+      <Content />
+    </article>
+
+    <!-- Footer -->
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-border);">
+      <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Related Guides</h3>
+      <div style="display: flex; gap: 1rem;">
+        <!-- Placeholder for related guides -->
+        <a href="/guides" class="btn btn-secondary">Explore more guides</a>
+      </div>
+    </div>
+  </div>
+</Layout>

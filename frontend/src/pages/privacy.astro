@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const sections = [
+  {
+    title: 'Information We Collect',
+    content: 'We collect information you provide when creating an account (email, name), usage data (roadmaps viewed, progress), and technical data (IP address, browser type). We do not sell your personal data to third parties.',
+  },
+  {
+    title: 'How We Use Your Information',
+    content: 'We use collected information to provide and improve the Service, send important account notifications, personalize your learning experience, and understand how the community uses roadmap.sh to guide content decisions.',
+  },
+  {
+    title: 'Cookies and Tracking',
+    content: 'We use strictly necessary cookies for session management and authentication. We do not use third-party advertising cookies. You may disable cookies in your browser settings, but this may affect Service functionality.',
+  },
+  {
+    title: 'Data Retention',
+    content: 'We retain your account data for as long as your account is active. You may request deletion of your account and associated data at any time. Anonymized usage statistics may be retained indefinitely.',
+  },
+  {
+    title: 'Data Security',
+    content: 'We implement industry-standard security measures including encryption in transit (HTTPS), hashed passwords, and regular security audits. No system is 100% secure, and we cannot guarantee absolute security.',
+  },
+  {
+    title: 'Third-Party Services',
+    content: 'We use GitHub for OAuth login and open-source hosting. We may use analytics tools to understand usage patterns. These services have their own privacy policies governing data collected through their systems.',
+  },
+  {
+    title: 'Your Rights',
+    content: 'You have the right to access, correct, or delete your personal data. Depending on your jurisdiction, you may also have rights under GDPR or CCPA. To exercise these rights, please contact us via GitHub or Discord.',
+  },
+  {
+    title: 'Changes to This Policy',
+    content: 'We may update this Privacy Policy from time to time. We will notify registered users of significant changes via email or an in-app notification. Continued use of the Service constitutes acceptance of the updated policy.',
+  },
+  {
+    title: 'Contact Us',
+    content: 'For privacy-related inquiries, please open an issue on our GitHub repository or contact us through Discord. We aim to respond to all privacy requests within 30 days.',
+  },
+];
+---
+
+<Layout title="Privacy Policy" description="Privacy Policy for roadmap.sh.">
+  <section style="padding:3.5rem 0 2rem;text-align:center;border-bottom:1px solid var(--color-border);">
+    <div class="container">
+      <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;">Privacy Policy</h1>
+      <p style="color:var(--color-text-secondary);font-size:0.9375rem;">Last updated: March 1, 2024</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:760px;">
+      <p style="color:var(--color-text-secondary);font-size:0.9375rem;line-height:1.75;margin-bottom:2.5rem;padding:1.25rem;background:var(--color-bg-card);border:1px solid var(--color-border);border-radius:var(--radius-lg);border-left:3px solid var(--color-accent);">
+        <strong style="color:var(--color-text-primary);">TL;DR:</strong> We collect minimal data to run the service. We don't sell your data. You can delete your account anytime. We use HTTPS everywhere.
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:2.25rem;">
+        {sections.map(s => (
+          <div>
+            <h2 style="font-size:1.0625rem;font-weight:700;margin-bottom:0.625rem;color:var(--color-text-primary);">{s.title}</h2>
+            <p style="color:var(--color-text-secondary);font-size:0.9375rem;line-height:1.75;">{s.content}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

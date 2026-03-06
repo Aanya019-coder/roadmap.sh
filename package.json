@@ -1,0 +1,13 @@
+{
+    "name": "roadmapsh-clone",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "pnpm -r --parallel dev",
+        "build": "pnpm -r build",
+        "install:all": "pnpm install"
+    },
+    "devDependencies": {
+        "pnpm": "^10.3.0"
+    }
+}

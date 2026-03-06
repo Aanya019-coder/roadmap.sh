@@ -1,0 +1,10 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TeamDashboard from '../../components/teams/TeamDashboard';
+
+const { slug } = Astro.params;
+---
+
+<Layout title="Team Dashboard | roadmap.sh">
+  <TeamDashboard client:only="react" slug={slug} />
+</Layout>

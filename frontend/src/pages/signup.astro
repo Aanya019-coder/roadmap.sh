@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SignupForm from '../components/auth/SignupForm';
+---
+
+<Layout title="Sign Up | roadmap.sh" description="Create an account to track your progress.">
+  <div class="container" style="padding: 4rem 1.5rem; display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 60px);">
+    <SignupForm client:load />
+  </div>
+</Layout>

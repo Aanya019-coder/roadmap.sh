@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const updates = [
+  {
+    date:    'March 2024',
+    version: 'v4.2',
+    title:   'AI & Data Science Roadmap',
+    desc:    'Added a comprehensive AI & Data Science roadmap covering Machine Learning, Deep Learning, MLOps, and more.',
+    badge:   'New Roadmap',
+    badgeVariant: 'green',
+  },
+  {
+    date:    'February 2024',
+    version: 'v4.1',
+    title:   'Android Roadmap Major Update',
+    desc:    'Completely revamped the Android roadmap to include Jetpack Compose, Kotlin flows, the latest Gradle conventions, and security best practices.',
+    badge:   'Updated',
+    badgeVariant: 'yellow',
+  },
+  {
+    date:    'January 2024',
+    version: 'v4.0',
+    title:   'Progress Tracking 2.0',
+    desc:    'Rebuilt the progress tracking system from scratch. Topics now sync across devices in real-time. New "In Progress" status added alongside Done/Skip.',
+    badge:   'Feature',
+    badgeVariant: 'blue',
+  },
+  {
+    date:    'December 2023',
+    version: 'v3.9',
+    title:   'Custom Roadmaps (Beta)',
+    desc:    'Users can now create, share, and embed their own custom roadmaps. Build your own learning path and share it with your team.',
+    badge:   'Feature',
+    badgeVariant: 'blue',
+  },
+  {
+    date:    'November 2023',
+    version: 'v3.8',
+    title:   'React & Node.js Roadmaps Refreshed',
+    desc:    'Updated React and Node.js roadmaps to reflect the 2023 ecosystem — React 18, React Server Components, Bun runtime, and more.',
+    badge:   'Updated',
+    badgeVariant: 'yellow',
+  },
+  {
+    date:    'October 2023',
+    version: 'v3.7',
+    title:   'Teams Feature',
+    desc:    'Organizations can now create private teams, assign roadmaps, track team member progress and create curated learning programs.',
+    badge:   'Feature',
+    badgeVariant: 'blue',
+  },
+  {
+    date:    'August 2023',
+    version: 'v3.5',
+    title:   'Best Practices Section Launch',
+    desc:    'Launched a brand new Best Practices section covering API Security, AWS, Code Review, Backend Performance, and more.',
+    badge:   'New Section',
+    badgeVariant: 'green',
+  },
+];
+---
+
+<Layout title="Changelog" description="What's new on roadmap.sh — recent updates, new roadmaps, and features.">
+  <section style="padding:3.5rem 0 2rem;text-align:center;border-bottom:1px solid var(--color-border);">
+    <div class="container">
+      <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;">Changelog</h1>
+      <p style="color:var(--color-text-secondary);font-size:1.0625rem;max-width:520px;margin:0 auto;">
+        Stay up to date with the latest additions, updates, and improvements to roadmap.sh.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:760px;">
+      <div class="timeline">
+        {updates.map(u => (
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div style="margin-bottom:0.5rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+              <time style="font-size:0.8125rem;color:var(--color-text-muted);">{u.date}</time>
+              <code style="font-size:0.75rem;background:var(--color-bg-elevated);border:1px solid var(--color-border);padding:0.15rem 0.45rem;border-radius:var(--radius-sm);color:var(--color-text-muted);">{u.version}</code>
+              <span class={`badge badge-${u.badgeVariant}`}>{u.badge}</span>
+            </div>
+            <h2 style="font-size:1.125rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.01em;">{u.title}</h2>
+            <p style="color:var(--color-text-secondary);font-size:0.9375rem;line-height:1.65;">{u.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

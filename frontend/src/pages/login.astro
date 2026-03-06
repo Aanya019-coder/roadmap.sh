@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LoginForm from '../components/auth/LoginForm';
+---
+
+<Layout title="Log In | roadmap.sh" description="Log in to your account.">
+  <div class="container" style="padding: 4rem 1.5rem; display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 60px);">
+    <LoginForm client:load />
+  </div>
+</Layout>

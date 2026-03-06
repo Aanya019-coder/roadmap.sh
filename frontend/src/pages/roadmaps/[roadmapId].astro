@@ -1,0 +1,131 @@
+---
+import { roadmaps } from '../../data/roadmaps/roadmaps';
+import RoadmapPageApp from '../../components/roadmap/RoadmapPageApp';
+import RoadmapSkeleton from '../../components/roadmap/RoadmapSkeleton';
+
+export function getStaticPaths() {
+  return roadmaps.map(r => ({
+    params: { roadmapId: r.id },
+    props:  { roadmap: r },
+  }));
+}
+
+const { roadmap } = Astro.props;
+const { roadmapId } = Astro.params;
+
+/* ── Load roadmap JSON if it exists ── */
+let roadmapData: object | null = null;
+const contentMap: Record<string, string> = {};
+
+try {
+  if (roadmapId === 'frontend') {
+    const json = await import('../../data/roadmaps/frontend/roadmap.json');
+    roadmapData = json.default;
+
+    /* Load all content markdown files */
+    const contentFiles: Record<string, () => Promise<{ default: string }>> = {
+      internet:       () => import('../../data/roadmaps/frontend/content/internet.md?raw'),
+      html:           () => import('../../data/roadmaps/frontend/content/html.md?raw'),
+      css:            () => import('../../data/roadmaps/frontend/content/css.md?raw'),
+      javascript:     () => import('../../data/roadmaps/frontend/content/javascript.md?raw'),
+      react:          () => import('../../data/roadmaps/frontend/content/react.md?raw'),
+      typescript:     () => import('../../data/roadmaps/frontend/content/typescript.md?raw'),
+      'version-control': () => import('../../data/roadmaps/frontend/content/version-control.md?raw'),
+    };
+
+    await Promise.all(
+      Object.entries(contentFiles).map(async ([key, loader]) => {
+        const mod = await loader();
+        contentMap[key] = mod.default;
+      })
+    );
+  }
+} catch (e) {
+  // roadmap JSON not yet created — show placeholder
+}
+
+const hasInteractiveMap = Boolean(roadmapData);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={roadmap.description} />
+    <title>{roadmap.title} Roadmap | roadmap.sh</title>
+    
+    <!-- SEO / OG Tags -->
+    <meta property="og:title" content={`${roadmap.title} Roadmap | roadmap.sh`} />
+    <meta property="og:description" content={roadmap.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={`https://roadmap.sh/og/${roadmapId}.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/styles/global.css" />
+    <style>
+      @import url('/src/styles/global.css');
+    </style>
+  </head>
+  <body style="margin:0;padding:0;background:#0a0a0a;color:#fff;font-family:'Inter',system-ui,sans-serif;overflow:hidden;">
+
+    {hasInteractiveMap ? (
+      <RoadmapPageApp
+        client:only="react"
+        roadmapData={roadmapData}
+        contentMap={contentMap}
+        roadmapId={roadmapId}
+      >
+        <div slot="fallback">
+           <RoadmapSkeleton />
+        </div>
+      </RoadmapPageApp>
+    ) : (
+      /* Fallback for roadmaps that don't have JSON yet */
+      <div style="display:flex;flex-direction:column;min-height:100vh;overflow-y:auto;">
+        <!-- Navbar import -->
+        <style>
+          body { overflow: auto !important; }
+        </style>
+        <script>document.body.style.overflow='auto';</script>
+        <div style="padding:3.5rem 0 2.5rem;border-bottom:1px solid #262626;text-align:center;">
+          <div style="max-width:1200px;margin:0 auto;padding:0 1.5rem;">
+            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;font-size:0.8rem;color:#525252;">
+              <a href="/roadmaps" style="color:#525252;text-decoration:none;">← Roadmaps</a>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:1.5rem;text-align:left;flex-wrap:wrap;">
+              <div style="width:64px;height:64px;border-radius:12px;background:#1c1c1c;border:1px solid #262626;display:flex;align-items:center;justify-content:center;font-size:2.25rem;flex-shrink:0;">
+                {roadmap.icon}
+              </div>
+              <div>
+                <h1 style="font-size:2rem;font-weight:800;letter-spacing:-0.03em;margin:0 0 0.5rem;">{roadmap.title}</h1>
+                <p style="color:#a3a3a3;font-size:1rem;margin:0 0 1.25rem;">{roadmap.description}</p>
+                <div style="display:flex;gap:0.75rem;">
+                  <a href="/signup" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.625rem 1.25rem;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:0.875rem;font-weight:500;text-decoration:none;cursor:pointer;">
+                    Track Progress
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="max-width:1200px;margin:4rem auto;padding:0 1.5rem;text-align:center;">
+          <div style="border:2px dashed #262626;border-radius:20px;padding:5rem 2rem;background:#111;">
+            <div style="font-size:3.5rem;margin-bottom:1rem;">{roadmap.icon}</div>
+            <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:0.75rem;">{roadmap.title} Roadmap</h2>
+            <p style="color:#a3a3a3;max-width:480px;margin:0 auto 1.5rem;line-height:1.65;">
+              The interactive roadmap for this path is coming soon. Start with the Frontend roadmap to see the full interactive experience.
+            </p>
+            <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+              <a href="/roadmaps/frontend" style="display:inline-flex;padding:0.625rem 1.25rem;background:#16a34a;color:#fff;border-radius:8px;font-size:0.875rem;font-weight:500;text-decoration:none;">View Frontend Roadmap</a>
+              <a href="/roadmaps" style="display:inline-flex;padding:0.625rem 1.25rem;background:none;color:#a3a3a3;border:1px solid #404040;border-radius:8px;font-size:0.875rem;text-decoration:none;">← All Roadmaps</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </body>
+</html>

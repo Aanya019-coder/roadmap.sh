@@ -1,0 +1,117 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const faqs = [
+  {
+    question: "What is roadmap.sh?",
+    answer: "roadmap.sh is a community-driven project that provides learning roadmaps, guides, and best practices for various tech roles. It helps developers navigate their learning journey with structured, up-to-date paths.",
+  },
+  {
+    question: "Who creates and maintains these roadmaps?",
+    answer: "The roadmaps are community-contributed and maintained by thousands of developers around the world. They are open-source and anyone can contribute via GitHub. Core maintainers review and approve changes to ensure quality.",
+  },
+  {
+    question: "Are the roadmaps free to use?",
+    answer: "Yes! All roadmaps, guides, and best practices on roadmap.sh are completely free. We also offer a free account to track your progress, create custom roadmaps, and access personalized recommendations.",
+  },
+  {
+    question: "How do I track my progress on a roadmap?",
+    answer: "Create a free account and you can mark topics as 'Done', 'In Progress', or 'Skip'. Your progress is saved and you can revisit it any time. You can also share your progress with others.",
+  },
+  {
+    question: "Can I create my own custom roadmaps?",
+    answer: "Yes! Registered users can create custom roadmaps, share them publicly or keep them private, and even embed them on their own websites or blogs.",
+  },
+  {
+    question: "How can I contribute to roadmap.sh?",
+    answer: "We welcome contributions! You can submit pull requests on GitHub to suggest new content, fix errors, or propose new roadmaps. Check our contributing guide on GitHub for detailed instructions.",
+  },
+  {
+    question: "Is there a mobile app?",
+    answer: "Currently roadmap.sh is a web application optimized for mobile browsers. A dedicated mobile app is on our roadmap for future development.",
+  },
+];
+---
+
+<Layout title="About" description="Learn about roadmap.sh — the open-source developer roadmap community.">
+  <!-- Hero -->
+  <section style="padding:3.5rem 0 2rem;text-align:center;border-bottom:1px solid var(--color-border);">
+    <div class="container">
+      <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;">
+        About <span class="gradient-text">roadmap.sh</span>
+      </h1>
+      <p style="color:var(--color-text-secondary);font-size:1.0625rem;max-width:600px;margin:0 auto;line-height:1.65;">
+        A growing community of developers helping each other navigate the vast landscape of software development through structured, community-driven roadmaps.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission -->
+  <section class="section">
+    <div class="container" style="max-width:820px;">
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-bottom:3rem;">
+        {[
+          { icon:'🗺️', title:'Roadmaps',       desc:'Opinionated, structured learning paths for every tech role.' },
+          { icon:'📖', title:'Guides',          desc:'Deep-dive articles on topics that matter to developers.' },
+          { icon:'✅', title:'Best Practices',  desc:'Community-tested practices for common engineering challenges.' },
+          { icon:'💬', title:'Community',       desc:'45K+ members on Discord sharing knowledge and opportunities.' },
+        ].map(item => (
+          <div class="card" style="text-align:center;padding:1.75rem 1.25rem;">
+            <div style="font-size:2rem;margin-bottom:0.75rem;">{item.icon}</div>
+            <h3 style="font-weight:600;margin-bottom:0.5rem;font-size:1rem;">{item.title}</h3>
+            <p style="color:var(--color-text-secondary);font-size:0.875rem;line-height:1.6;">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- FAQ -->
+      <h2 style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:1.5rem;">
+        Frequently Asked Questions
+      </h2>
+
+      <div id="faq-accordion" style="border-top:1px solid var(--color-border);">
+        {faqs.map((faq, i) => (
+          <div class="accordion-item">
+            <button
+              class="accordion-trigger"
+              data-index={i}
+              aria-expanded="false"
+            >
+              {faq.question}
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </button>
+            <div class="accordion-content" data-content={i}>
+              {faq.answer}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.querySelectorAll('.accordion-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx     = btn.getAttribute('data-index');
+      const content = document.querySelector(`.accordion-content[data-content="${idx}"]`);
+      const icon    = btn.querySelector('.accordion-icon');
+      const isOpen  = content?.classList.contains('open');
+
+      // close all
+      document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+      document.querySelectorAll('.accordion-trigger').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        b.querySelector('.accordion-icon')?.classList.remove('open');
+      });
+
+      if (!isOpen) {
+        content?.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        icon?.classList.add('open');
+      }
+    });
+  });
+</script>

@@ -1,0 +1,35 @@
+[
+    {
+        "id": "do-dockerize",
+        "title": "Dockerize a Web App",
+        "difficulty": "Beginner",
+        "description": "Take a simple Node.js or Python application and write a multi-stage Dockerfile for it. Ensure the final image is optimized and secure.",
+        "links": [
+            "docker",
+            "containers",
+            "optimization"
+        ]
+    },
+    {
+        "id": "do-ci-cd",
+        "title": "GitHub Actions CI/CD Pipeline",
+        "difficulty": "Intermediate",
+        "description": "Set up a CI/CD pipeline that automatically lints, tests, and builds a project on every pull request to the main branch.",
+        "links": [
+            "ci-cd",
+            "github-actions",
+            "automation"
+        ]
+    },
+    {
+        "id": "do-k8s-cluster",
+        "title": "Kubernetes Web Cluster",
+        "difficulty": "Advanced",
+        "description": "Deploy a scalable web application on a local Kubernetes cluster (like minikube). Configure deployments, services, ingress controllers, and basic horizontal pod autoscaling.",
+        "links": [
+            "kubernetes",
+            "scaling",
+            "orchestration"
+        ]
+    }
+]

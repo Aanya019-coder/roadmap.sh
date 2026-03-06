@@ -1,0 +1,580 @@
+{
+    "id": "frontend",
+    "title": "Frontend Developer",
+    "description": "Step by step guide to becoming a modern frontend developer in 2024",
+    "nodes": [
+        {
+            "id": "internet",
+            "label": "Internet",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 30
+            },
+            "style": "primary",
+            "group": "foundational"
+        },
+        {
+            "id": "how-internet",
+            "label": "How does the internet work?",
+            "type": "subtopic",
+            "position": {
+                "x": 180,
+                "y": 130
+            },
+            "style": "secondary",
+            "group": "foundational"
+        },
+        {
+            "id": "what-is-http",
+            "label": "What is HTTP?",
+            "type": "subtopic",
+            "position": {
+                "x": 420,
+                "y": 130
+            },
+            "style": "secondary",
+            "group": "foundational"
+        },
+        {
+            "id": "dns",
+            "label": "DNS and how it works",
+            "type": "subtopic",
+            "position": {
+                "x": 660,
+                "y": 130
+            },
+            "style": "secondary",
+            "group": "foundational"
+        },
+        {
+            "id": "html",
+            "label": "HTML",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 240
+            },
+            "style": "primary",
+            "group": "html"
+        },
+        {
+            "id": "html-basics",
+            "label": "Learn the basics",
+            "type": "subtopic",
+            "position": {
+                "x": 200,
+                "y": 330
+            },
+            "style": "secondary",
+            "group": "html"
+        },
+        {
+            "id": "forms-validations",
+            "label": "Forms & Validations",
+            "type": "subtopic",
+            "position": {
+                "x": 440,
+                "y": 330
+            },
+            "style": "secondary",
+            "group": "html"
+        },
+        {
+            "id": "semantic-html",
+            "label": "Semantic HTML",
+            "type": "subtopic",
+            "position": {
+                "x": 680,
+                "y": 330
+            },
+            "style": "secondary",
+            "group": "html"
+        },
+        {
+            "id": "css",
+            "label": "CSS",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 450
+            },
+            "style": "primary",
+            "group": "css"
+        },
+        {
+            "id": "css-basics",
+            "label": "Learn the basics",
+            "type": "subtopic",
+            "position": {
+                "x": 160,
+                "y": 540
+            },
+            "style": "secondary",
+            "group": "css"
+        },
+        {
+            "id": "layouts",
+            "label": "Making Layouts",
+            "type": "subtopic",
+            "position": {
+                "x": 360,
+                "y": 540
+            },
+            "style": "secondary",
+            "group": "css"
+        },
+        {
+            "id": "responsive",
+            "label": "Responsive Design",
+            "type": "subtopic",
+            "position": {
+                "x": 560,
+                "y": 540
+            },
+            "style": "secondary",
+            "group": "css"
+        },
+        {
+            "id": "javascript",
+            "label": "JavaScript",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 660
+            },
+            "style": "primary",
+            "group": "javascript"
+        },
+        {
+            "id": "js-basics",
+            "label": "Learn the basics",
+            "type": "subtopic",
+            "position": {
+                "x": 180,
+                "y": 750
+            },
+            "style": "secondary",
+            "group": "javascript"
+        },
+        {
+            "id": "dom",
+            "label": "DOM Manipulation",
+            "type": "subtopic",
+            "position": {
+                "x": 440,
+                "y": 750
+            },
+            "style": "secondary",
+            "group": "javascript"
+        },
+        {
+            "id": "fetch-api",
+            "label": "Fetch API / Ajax",
+            "type": "subtopic",
+            "position": {
+                "x": 700,
+                "y": 750
+            },
+            "style": "secondary",
+            "group": "javascript"
+        },
+        {
+            "id": "version-control",
+            "label": "Version Control",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 860
+            },
+            "style": "primary",
+            "group": "tools"
+        },
+        {
+            "id": "git",
+            "label": "Git",
+            "type": "subtopic",
+            "position": {
+                "x": 280,
+                "y": 950
+            },
+            "style": "secondary",
+            "group": "tools"
+        },
+        {
+            "id": "github",
+            "label": "GitHub",
+            "type": "subtopic",
+            "position": {
+                "x": 600,
+                "y": 950
+            },
+            "style": "secondary",
+            "group": "tools"
+        },
+        {
+            "id": "package-managers",
+            "label": "Package Managers",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 1060
+            },
+            "style": "primary",
+            "group": "tools"
+        },
+        {
+            "id": "npm",
+            "label": "npm",
+            "type": "subtopic",
+            "position": {
+                "x": 240,
+                "y": 1150
+            },
+            "style": "secondary",
+            "group": "tools"
+        },
+        {
+            "id": "pnpm",
+            "label": "pnpm",
+            "type": "subtopic",
+            "position": {
+                "x": 440,
+                "y": 1150
+            },
+            "style": "secondary",
+            "group": "tools"
+        },
+        {
+            "id": "yarn",
+            "label": "yarn",
+            "type": "subtopic",
+            "position": {
+                "x": 640,
+                "y": 1150
+            },
+            "style": "secondary",
+            "group": "tools"
+        },
+        {
+            "id": "frameworks",
+            "label": "Pick a Framework",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 1260
+            },
+            "style": "primary",
+            "group": "frameworks"
+        },
+        {
+            "id": "react",
+            "label": "React",
+            "type": "subtopic",
+            "position": {
+                "x": 180,
+                "y": 1350
+            },
+            "style": "highlight",
+            "group": "frameworks"
+        },
+        {
+            "id": "vue",
+            "label": "Vue",
+            "type": "subtopic",
+            "position": {
+                "x": 440,
+                "y": 1350
+            },
+            "style": "secondary",
+            "group": "frameworks"
+        },
+        {
+            "id": "angular",
+            "label": "Angular",
+            "type": "subtopic",
+            "position": {
+                "x": 700,
+                "y": 1350
+            },
+            "style": "secondary",
+            "group": "frameworks"
+        },
+        {
+            "id": "css-frameworks",
+            "label": "CSS Frameworks",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 1460
+            },
+            "style": "primary",
+            "group": "css-advanced"
+        },
+        {
+            "id": "tailwind",
+            "label": "Tailwind CSS",
+            "type": "subtopic",
+            "position": {
+                "x": 240,
+                "y": 1550
+            },
+            "style": "secondary",
+            "group": "css-advanced"
+        },
+        {
+            "id": "bootstrap",
+            "label": "Bootstrap",
+            "type": "subtopic",
+            "position": {
+                "x": 640,
+                "y": 1550
+            },
+            "style": "secondary",
+            "group": "css-advanced"
+        },
+        {
+            "id": "testing",
+            "label": "Testing",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 1660
+            },
+            "style": "primary",
+            "group": "testing"
+        },
+        {
+            "id": "jest",
+            "label": "Jest",
+            "type": "subtopic",
+            "position": {
+                "x": 240,
+                "y": 1750
+            },
+            "style": "secondary",
+            "group": "testing"
+        },
+        {
+            "id": "vitest",
+            "label": "Vitest",
+            "type": "subtopic",
+            "position": {
+                "x": 640,
+                "y": 1750
+            },
+            "style": "secondary",
+            "group": "testing"
+        },
+        {
+            "id": "typescript",
+            "label": "TypeScript",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 1860
+            },
+            "style": "primary",
+            "group": "typescript"
+        },
+        {
+            "id": "web-security",
+            "label": "Web Security",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 1970
+            },
+            "style": "primary",
+            "group": "advanced"
+        },
+        {
+            "id": "performance",
+            "label": "Web Performance",
+            "type": "topic",
+            "position": {
+                "x": 440,
+                "y": 2080
+            },
+            "style": "primary",
+            "group": "advanced"
+        }
+    ],
+    "edges": [
+        {
+            "id": "e-internet-how",
+            "source": "internet",
+            "target": "how-internet"
+        },
+        {
+            "id": "e-internet-http",
+            "source": "internet",
+            "target": "what-is-http"
+        },
+        {
+            "id": "e-internet-dns",
+            "source": "internet",
+            "target": "dns"
+        },
+        {
+            "id": "e-internet-html",
+            "source": "internet",
+            "target": "html"
+        },
+        {
+            "id": "e-html-basics",
+            "source": "html",
+            "target": "html-basics"
+        },
+        {
+            "id": "e-html-forms",
+            "source": "html",
+            "target": "forms-validations"
+        },
+        {
+            "id": "e-html-semantic",
+            "source": "html",
+            "target": "semantic-html"
+        },
+        {
+            "id": "e-html-css",
+            "source": "html",
+            "target": "css"
+        },
+        {
+            "id": "e-css-basics",
+            "source": "css",
+            "target": "css-basics"
+        },
+        {
+            "id": "e-css-layouts",
+            "source": "css",
+            "target": "layouts"
+        },
+        {
+            "id": "e-css-responsive",
+            "source": "css",
+            "target": "responsive"
+        },
+        {
+            "id": "e-css-js",
+            "source": "css",
+            "target": "javascript"
+        },
+        {
+            "id": "e-js-basics",
+            "source": "javascript",
+            "target": "js-basics"
+        },
+        {
+            "id": "e-js-dom",
+            "source": "javascript",
+            "target": "dom"
+        },
+        {
+            "id": "e-js-fetch",
+            "source": "javascript",
+            "target": "fetch-api"
+        },
+        {
+            "id": "e-js-vc",
+            "source": "javascript",
+            "target": "version-control"
+        },
+        {
+            "id": "e-vc-git",
+            "source": "version-control",
+            "target": "git"
+        },
+        {
+            "id": "e-vc-github",
+            "source": "version-control",
+            "target": "github"
+        },
+        {
+            "id": "e-vc-pm",
+            "source": "version-control",
+            "target": "package-managers"
+        },
+        {
+            "id": "e-pm-npm",
+            "source": "package-managers",
+            "target": "npm"
+        },
+        {
+            "id": "e-pm-pnpm",
+            "source": "package-managers",
+            "target": "pnpm"
+        },
+        {
+            "id": "e-pm-yarn",
+            "source": "package-managers",
+            "target": "yarn"
+        },
+        {
+            "id": "e-pm-fw",
+            "source": "package-managers",
+            "target": "frameworks"
+        },
+        {
+            "id": "e-fw-react",
+            "source": "frameworks",
+            "target": "react"
+        },
+        {
+            "id": "e-fw-vue",
+            "source": "frameworks",
+            "target": "vue"
+        },
+        {
+            "id": "e-fw-angular",
+            "source": "frameworks",
+            "target": "angular"
+        },
+        {
+            "id": "e-fw-css",
+            "source": "frameworks",
+            "target": "css-frameworks"
+        },
+        {
+            "id": "e-cssfw-tailwind",
+            "source": "css-frameworks",
+            "target": "tailwind"
+        },
+        {
+            "id": "e-cssfw-bootstrap",
+            "source": "css-frameworks",
+            "target": "bootstrap"
+        },
+        {
+            "id": "e-cssfw-testing",
+            "source": "css-frameworks",
+            "target": "testing"
+        },
+        {
+            "id": "e-test-jest",
+            "source": "testing",
+            "target": "jest"
+        },
+        {
+            "id": "e-test-vitest",
+            "source": "testing",
+            "target": "vitest"
+        },
+        {
+            "id": "e-test-ts",
+            "source": "testing",
+            "target": "typescript"
+        },
+        {
+            "id": "e-ts-security",
+            "source": "typescript",
+            "target": "web-security"
+        },
+        {
+            "id": "e-security-perf",
+            "source": "web-security",
+            "target": "performance"
+        }
+    ]
+}

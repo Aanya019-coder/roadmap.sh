@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const sections = [
+  {
+    title: '1. Acceptance of Terms',
+    content: 'By accessing or using roadmap.sh (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Service. We reserve the right to update these Terms at any time without prior notice.',
+  },
+  {
+    title: '2. Description of Service',
+    content: 'roadmap.sh provides community-driven learning roadmaps, guides, and best practices for software developers. The Service is provided "as is" without any warranties, express or implied. Content is created and maintained by community contributors.',
+  },
+  {
+    title: '3. User Accounts',
+    content: 'You may create an account to access additional features such as progress tracking and custom roadmaps. You are responsible for maintaining the security of your account credentials. We reserve the right to terminate accounts that violate these Terms.',
+  },
+  {
+    title: '4. User-Generated Content',
+    content: 'Users may contribute content via GitHub pull requests or other means. By contributing, you grant roadmap.sh a perpetual, irrevocable, worldwide license to use, reproduce, and distribute your contributions under the project\'s open-source license.',
+  },
+  {
+    title: '5. Intellectual Property',
+    content: 'The roadmap.sh brand, logo, and original content are owned by roadmap.sh. Community-contributed content is licensed under Creative Commons Attribution 4.0 (CC BY 4.0). You may use and adapt it with proper attribution.',
+  },
+  {
+    title: '6. Prohibited Conduct',
+    content: 'You agree not to use the Service to: distribute spam, malware, or harmful content; scrape the site in a way that burdens servers; impersonate others; or engage in any activity that violates applicable law.',
+  },
+  {
+    title: '7. Disclaimer of Warranties',
+    content: 'The Service is provided "as is" without warranty of any kind. roadmap.sh does not guarantee the accuracy, completeness, or timeliness of any content and is not responsible for any errors or omissions.',
+  },
+  {
+    title: '8. Limitation of Liability',
+    content: 'To the maximum extent permitted by law, roadmap.sh shall not be liable for any indirect, incidental, special, or consequential damages resulting from your use of the Service.',
+  },
+  {
+    title: '9. Governing Law',
+    content: 'These Terms are governed by the laws of the jurisdiction in which roadmap.sh operates, without regard to its conflict-of-law provisions.',
+  },
+  {
+    title: '10. Contact',
+    content: 'For questions about these Terms, please open an issue on our GitHub repository or reach out via our Discord community.',
+  },
+];
+---
+
+<Layout title="Terms of Service" description="Terms of Service for roadmap.sh.">
+  <section style="padding:3.5rem 0 2rem;text-align:center;border-bottom:1px solid var(--color-border);">
+    <div class="container">
+      <h1 style="font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;">Terms of Service</h1>
+      <p style="color:var(--color-text-secondary);font-size:0.9375rem;">Last updated: March 1, 2024</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:760px;">
+      <div style="display:flex;flex-direction:column;gap:2.25rem;">
+        {sections.map(s => (
+          <div>
+            <h2 style="font-size:1.0625rem;font-weight:700;margin-bottom:0.625rem;color:var(--color-text-primary);">{s.title}</h2>
+            <p style="color:var(--color-text-secondary);font-size:0.9375rem;line-height:1.75;">{s.content}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RoadmapBuilder from '../components/roadmap/RoadmapBuilder';
+---
+
+<Layout title="Build Custom Roadmap | roadmap.sh">
+  <div class="container" style="padding: 2rem 1.5rem;">
+    <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem;">Roadmap Builder</h1>
+        <p style="color: #a3a3a3;">Create your own learning path, share it with others, or track your custom progress.</p>
+    </div>
+    <RoadmapBuilder client:only="react" />
+  </div>
+</Layout>

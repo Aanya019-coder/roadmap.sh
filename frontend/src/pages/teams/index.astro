@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import TeamsList from '../../components/teams/TeamsList';
+---
+
+<Layout title="Your Teams | roadmap.sh">
+  <div class="container" style="padding: 4rem 1.5rem; max-width: 1000px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+        <div>
+            <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem;">Teams</h1>
+            <p style="color: #a3a3a3;">Manage your engineering teams and track collective progress.</p>
+        </div>
+        <a href="/teams/create" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">+ Create Team</a>
+    </div>
+
+    <TeamsList client:load />
+  </div>
+</Layout>

@@ -1,0 +1,11 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SettingsTabs from '../components/auth/SettingsTabs';
+---
+
+<Layout title="Account Settings | roadmap.sh">
+  <div class="container" style="padding: 4rem 1.5rem;">
+    <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 3rem; text-align: center;">Settings</h1>
+    <SettingsTabs client:load />
+  </div>
+</Layout>

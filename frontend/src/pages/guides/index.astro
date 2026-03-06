@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Use Astro.glob to get all markdown files in the guides folder
+const guides = await Astro.glob('../../data/guides/*.md');
+
+// Prepare the data for the frontend
+const guidesData = guides.map((guide) => ({
+  slug: guide.file.split('/').pop()?.replace('.md', ''),
+  title: guide.frontmatter.title,
+  description: guide.frontmatter.description,
+  author: guide.frontmatter.author,
+  date: new Date(guide.frontmatter.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
+  type: guide.frontmatter.type,
+  tags: guide.frontmatter.tags,
+  readingTime: '5 min read' // Placeholder
+}));
+---
+
+<Layout title="Guides and Best Practices | roadmap.sh" description="Read our comprehensive guides and best practices on various development topics.">
+  <div class="container" style="padding: 3rem 1.5rem;">
+    <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">Guides</h1>
+    <p style="color: var(--color-text-secondary); margin-bottom: 2rem; font-size: 1.125rem;">
+      Dive deep into textual, video, and interactive guides written by community experts.
+    </p>
+
+    <!-- Filters placeholder -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+      <input id="guides-search" type="text" placeholder="Search guides..." style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-bg-elevated); color: white; width: 100%; max-width: 300px;" />
+      <select id="guides-filter" style="padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-bg-elevated); color: white;">
+        <option value="">All Types</option>
+        <option value="Textual">Textual</option>
+        <option value="Video">Video</option>
+        <option value="Question">Question</option>
+      </select>
+    </div>
+
+    <!-- Guide Cards -->
+    <div id="guides-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+      {guidesData.map((guide) => (
+        <a href={`/guides/${guide.slug}`} class="guide-card" data-title={guide.title.toLowerCase()} data-type={guide.type} style="text-decoration: none; color: inherit;">
+          <div class="card" style="padding: 1.5rem; display: flex; flex-direction: column; height: 100%; transition: transform 0.2s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <span class={`badge ${guide.type === 'Textual' ? 'badge-blue' : guide.type === 'Video' ? 'badge-yellow' : 'badge-green'}`}>
+                {guide.type}
+              </span>
+              <span style="font-size: 0.75rem; color: var(--color-text-muted);">{guide.readingTime}</span>
+            </div>
+            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">{guide.title}</h2>
+            <p style="color: var(--color-text-secondary); font-size: 0.875rem; margin-bottom: 1.5rem; flex: 1;">
+              {guide.description}
+            </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--color-text-muted); padding-top: 1rem; border-top: 1px solid var(--color-border);">
+              <span>{guide.author}</span>
+              <span>{guide.date}</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('guides-search');
+    const filterSelect = document.getElementById('guides-filter');
+    const cards = document.querySelectorAll('.guide-card');
+
+    function filterGuides() {
+      const query = (searchInput as HTMLInputElement).value.toLowerCase();
+      const type = (filterSelect as HTMLSelectElement).value;
+
+      cards.forEach((card: any) => {
+        const title = card.getAttribute('data-title');
+        const cardType = card.getAttribute('data-type');
+        
+        const matchesQuery = title.includes(query);
+        const matchesType = type === '' || cardType === type;
+        
+        if (matchesQuery && matchesType) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput?.addEventListener('input', filterGuides);
+    filterSelect?.addEventListener('change', filterGuides);
+  </script>
+</Layout>

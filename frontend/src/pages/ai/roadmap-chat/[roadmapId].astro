@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import AiChatInterface from '../../components/ai/AiChatInterface';
+
+const { roadmapId } = Astro.params;
+
+// In a real app, you would fetch the roadmap content here to pass as context
+const context = `Context: This conversation is about the ${roadmapId} roadmap on roadmap.sh. Answer questions specifically related to the topics on this path.`;
+---
+
+<Layout title={`${roadmapId} AI Tutor | roadmap.sh`}>
+    <div style={{ padding: '1rem 1.5rem', background: '#0a0a0a', borderBottom: '1px solid #1f1f1f', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <a href={`/roadmaps/${roadmapId}`} style={{ color: '#525252', textDecoration: 'none', fontSize: '0.85rem' }}>← Back to Roadmap</a>
+        <h1 style={{ fontSize: '1rem', fontWeight: 700, margin: 0 }}>{roadmapId} AI Tutor</h1>
+    </div>
+    <AiChatInterface client:only="react" initialContext={context} />
+</Layout>

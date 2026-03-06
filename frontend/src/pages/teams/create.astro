@@ -1,0 +1,14 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CreateTeamForm from '../../components/teams/CreateTeamForm';
+---
+
+<Layout title="Create New Team | roadmap.sh">
+  <div class="container" style="padding: 6rem 1.5rem; display: flex; flex-direction: column; align-items: center; min-height: calc(100vh - 60px);">
+    <div style="max-width: 500px; width: 100%; text-align: center; margin-bottom: 3rem;">
+        <h1 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 1rem;">Create a Team</h1>
+        <p style="color: #a3a3a3;">Scale your learning culture. Share roadmaps, monitor progress, and grow together.</p>
+    </div>
+    <CreateTeamForm client:load />
+  </div>
+</Layout>

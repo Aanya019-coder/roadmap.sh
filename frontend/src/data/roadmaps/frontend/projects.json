@@ -1,0 +1,35 @@
+[
+    {
+        "id": "fe-portfolio",
+        "title": "Personal Portfolio Page",
+        "difficulty": "Beginner",
+        "description": "Build a static portfolio with sections for About, Skills, and Projects using only HTML and CSS. Focus on semantic HTML and basic responsive design.",
+        "links": [
+            "html",
+            "css",
+            "responsive"
+        ]
+    },
+    {
+        "id": "fe-weather-app",
+        "title": "Weather App",
+        "difficulty": "Intermediate",
+        "description": "Fetch live weather data from an API, display forecasts with icons, and handle loading/error states. Build it using vanilla JavaScript or a framework like React.",
+        "links": [
+            "javascript",
+            "api",
+            "fetch"
+        ]
+    },
+    {
+        "id": "fe-kanban-board",
+        "title": "Drag-and-Drop Kanban Board",
+        "difficulty": "Advanced",
+        "description": "Build a Trello-like drag-and-drop kanban board from scratch. Features should include multiple columns, drag-and-drop tasks, adding/editing/deleting tasks, and persisting state using localStorage.",
+        "links": [
+            "javascript",
+            "drag-and-drop",
+            "state-management"
+        ]
+    }
+]

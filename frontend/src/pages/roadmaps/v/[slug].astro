@@ -1,0 +1,40 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import RoadmapRenderer from '../../../components/roadmap/RoadmapRenderer';
+
+const { slug } = Astro.params;
+
+let roadmapData = null;
+try {
+    const res = await fetch(`http://localhost:5000/api/roadmaps/${slug}`);
+    if (res.ok) {
+        roadmapData = await res.json();
+    }
+} catch (e) {
+    console.error(e);
+}
+
+const hasData = !!roadmapData;
+---
+
+<Layout title={hasData ? roadmapData.title : 'Roadmap Not Found'}>
+    {!hasData ? (
+        <div style="text-align: center; padding: 5rem 0;">
+             <h1 style="font-size: 2rem;">Roadmap Not Found</h1>
+             <a href="/roadmaps" style="color: #16a34a;">Back to roadmaps</a>
+        </div>
+    ) : (
+        <div style="display: flex; flexDirection: column; height: calc(100vh - 60px); overflow: hidden;">
+            <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #262626; background: #0a0a0a; display: flex; justify-content: space-between; align-items: center;">
+                 <div>
+                    <h1 style="font-size: 1.25rem; font-weight: 700; color: #fff; margin: 0 0 0.25rem;">{roadmapData.title}</h1>
+                    <p style="font-size: 0.85rem; color: #737373; margin: 0;">Custom roadmap by community member</p>
+                 </div>
+                 <a href="/roadmaps" className="btn btn-secondary btn-sm">All Roadmaps</a>
+            </div>
+            <div style="flex: 1; position: relative;">
+                <RoadmapRenderer client:only="react" roadmapData={roadmapData} />
+            </div>
+        </div>
+    )}
+</Layout>

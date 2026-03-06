@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import QuizApp from '../../components/quiz/QuizApp';
+import javascriptQuestions from '../../data/questions/javascript.json';
+
+export function getStaticPaths() {
+  return [
+    { params: { topic: 'javascript' }, props: { questions: javascriptQuestions } }
+  ];
+}
+
+const { topic } = Astro.params;
+const { questions } = Astro.props;
+---
+
+<Layout title={`${topic} Quiz | roadmap.sh`} description={`Test your knowledge on ${topic} with our comprehensive quiz.`}>
+  <div class="container" style="padding: 4rem 1.5rem;">
+    <a href="/" style="color: var(--color-text-secondary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;">
+      ← Back to Home
+    </a>
+    <QuizApp client:load topic={topic} questions={questions} />
+  </div>
+</Layout>
