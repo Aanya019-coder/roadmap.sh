@@ -36,7 +36,6 @@ export default function Footer() {
              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                <li><a href="/ai" style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', textDecoration: 'none' }}>AI Tutor</a></li>
                <li><a href="/onboarding" style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', textDecoration: 'none' }}>Personalized Roadmaps</a></li>
-               <li><a href="/teams" style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', textDecoration: 'none' }}>Team Training</a></li>
                <li><a href="/premium" style={{ color: 'var(--color-text-secondary)', fontSize: '0.875rem', textDecoration: 'none' }}>Plan & Pricing</a></li>
              </ul>
           </div>
