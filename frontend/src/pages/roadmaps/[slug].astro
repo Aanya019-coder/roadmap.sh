@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const { slug } = Astro.params;
+
+// Fetch roadmap data server-side
+let roadmap: any = null;
+try {
+  const backendUrl = import.meta.env.BACKEND_URL || 'http://localhost:5000';
+  const res = await fetch(`${backendUrl}/api/roadmaps/${slug}`);
+  const json = await res.json();
+  if (json.success) roadmap = json.data;
+} catch (e) {
+  console.error('Failed to fetch roadmap', e);
+}
+
+if (!roadmap) return Astro.redirect('/roadmaps');
+---
+
+<Layout
+  title={roadmap.title}
+  description={roadmap.description}
+>
+  <!-- Roadmap Header -->
+  <div style="background:var(--color-bg-secondary);border-bottom:1px solid var(--color-border);padding:1.5rem 0">
+    <div class="container">
+      <nav style="font-size:0.8125rem;color:var(--color-text-muted);margin-bottom:0.75rem">
+        <a href="/" style="color:inherit;text-decoration:none">Home</a> /
+        <a href="/roadmaps" style="color:inherit;text-decoration:none"> Roadmaps</a> /
+        <span style="color:var(--color-text-secondary)"> {roadmap.title}</span>
+      </nav>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <div style="font-size:2.5rem;margin-bottom:0.5rem">{roadmap.icon}</div>
+          <h1 style="font-size:1.875rem;font-weight:800;color:var(--color-text-primary);margin-bottom:0.5rem">{roadmap.title}</h1>
+          <p style="color:var(--color-text-secondary);max-width:600px;line-height:1.6">{roadmap.description}</p>
+          <div style="display:flex;gap:0.75rem;margin-top:1rem;flex-wrap:wrap">
+            <span class="badge badge-gray">~{roadmap.estimated_weeks} weeks</span>
+            <span class="badge badge-gray">{roadmap.topic_count} topics</span>
+            <span class={`badge ${roadmap.category === 'role' ? 'badge-blue' : 'badge-yellow'}`}>{roadmap.category}</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.75rem;flex-shrink:0">
+          <a href={`/roadmaps/${slug}/projects`} class="btn btn-secondary" style="text-decoration:none">💡 Projects</a>
+          <button id="share-btn" class="btn btn-ghost">Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roadmap Viewer -->
+  <div id="roadmap-renderer" style="height:calc(100vh - 200px);width:100%;position:relative"></div>
+
+  <script define:vars={{ roadmap }}>
+    import { createRoot } from 'react-dom/client';
+    import RoadmapRenderer from '../../components/roadmap/RoadmapRenderer';
+    import { supabase } from '../../lib/supabase';
+    import React from 'react';
+
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      const root = createRoot(document.getElementById('roadmap-renderer'));
+      root.render(
+        React.createElement(RoadmapRenderer, {
+          roadmapId: roadmap.slug,
+          roadmapType: 'prebuilt',
+          initialNodes: roadmap.nodes || [],
+          initialEdges: roadmap.edges || [],
+          token: session?.access_token,
+        })
+      );
+    })();
+
+    document.getElementById('share-btn')?.addEventListener('click', () => {
+      navigator.clipboard?.writeText(window.location.href);
+      alert('Link copied!');
+    });
+  </script>
+</Layout>

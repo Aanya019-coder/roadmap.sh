@@ -1,311 +1,311 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import ContextMenu from './ContextMenu';
+import React, { useCallback, useState } from 'react';
 import {
-    ReactFlow,
-    MiniMap,
-    Controls,
-    Background,
-    BackgroundVariant,
-    useNodesState,
-    useEdgesState,
-    addEdge,
-    type Node,
-    type Edge,
-    type NodeTypes,
-    type Connection,
-    Handle,
-    Position,
-    MarkerType,
+  ReactFlow, Background, Controls, MiniMap,
+  type Node, type Edge, type NodeProps,
+  Handle, Position, useNodesState, useEdgesState, addEdge,
+  MarkerType, ReactFlowProvider,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { api } from '../../lib/api';
+import { supabase } from '../../lib/supabase';
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  TYPE DEFINITIONS                                                           */
-/* ─────────────────────────────────────────────────────────────────────────── */
-
-export type NodeStatus = 'done' | 'in-progress' | 'skipped' | 'default';
-
-export interface RoadmapNodeData {
-    label: string;
-    style: 'primary' | 'secondary' | 'highlight' | 'checklist';
-    status?: NodeStatus;
-    onNodeClick?: (id: string) => void;
-    [key: string]: unknown;
-}
-
-export interface RoadmapJsonNode {
-    id: string;
-    label: string;
-    type: 'topic' | 'subtopic';
-    position: { x: number; y: number };
-    style: 'primary' | 'secondary' | 'highlight' | 'checklist';
-    group?: string;
-}
-
-export interface RoadmapData {
-    id: string;
-    title: string;
-    description: string;
-    nodes: RoadmapJsonNode[];
-    edges: Array<{ id: string; source: string; target: string }>;
-}
-
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  STATUS COLORS                                                              */
-/* ─────────────────────────────────────────────────────────────────────────── */
-
-const statusStyles: Record<NodeStatus, { bg: string; border: string; text: string }> = {
-    done: { bg: 'rgba(22,163,74,0.18)', border: '#16a34a', text: '#22c55e' },
-    'in-progress': { bg: 'rgba(202,138,4,0.18)', border: '#ca8a04', text: '#eab308' },
-    skipped: { bg: 'rgba(82,82,82,0.2)', border: '#525252', text: '#737373' },
-    default: { bg: 'rgba(28,28,28,0.95)', border: '#262626', text: '#ffffff' },
+// ─── Node Colors ──────────────────────────────────────────────────────────────
+const TYPE_COLORS: Record<string, { bg: string; border: string; text: string; glow: string }> = {
+  topic:     { bg: 'rgba(59, 130, 246, 0.08)',  border: 'rgba(59,130,246,0.3)', text: '#60a5fa', glow: 'rgba(59,130,246,0.2)' },
+  project:   { bg: 'rgba(16, 185, 129, 0.08)',  border: 'rgba(16,185,129,0.3)', text: '#34d399', glow: 'rgba(16,185,129,0.2)' },
+  milestone: { bg: 'rgba(245, 158, 11, 0.08)',  border: 'rgba(245,158,11,0.3)', text: '#fbbf24', glow: 'rgba(245,158,11,0.2)' },
 };
 
-const nodeStyleVariant = {
-    primary: { borderWidth: 1.5, fontSize: '0.8125rem', fontWeight: 600, minWidth: 150 },
-    secondary: { borderWidth: 1, fontSize: '0.75rem', fontWeight: 500, minWidth: 130 },
-    highlight: { borderWidth: 2, fontSize: '0.8125rem', fontWeight: 700, minWidth: 150 },
-    checklist: { borderWidth: 1, fontSize: '0.8125rem', fontWeight: 500, minWidth: 200 },
+const STATUS_BORDER: Record<string, string> = {
+  not_started: 'rgba(255,255,255,0.08)',
+  in_progress: '#f59e0b',
+  done:        '#10b981',
+  skipped:     'rgba(255,255,255,0.03)',
 };
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  CUSTOM NODE                                                                */
-/* ─────────────────────────────────────────────────────────────────────────── */
+// ─── Custom Node ──────────────────────────────────────────────────────────────
+function RoadmapNode({ data }: NodeProps) {
+  const nodeData = data as any;
+  const typeStyle = TYPE_COLORS[nodeData.type] || TYPE_COLORS.topic;
+  const statusBorder = STATUS_BORDER[nodeData.status || 'not_started'];
 
-const RoadmapNode: React.FC<{ id: string; data: RoadmapNodeData; selected: boolean }> = ({
-    id,
-    data,
-    selected,
-}) => {
-    const status = data.status ?? 'default';
-    const variant = data.style ?? 'secondary';
-    const colors = statusStyles[status];
-    const varStyle = nodeStyleVariant[variant];
-
-    const statusIcon = {
-        done: '✓',
-        'in-progress': '◐',
-        skipped: '↷',
-        default: '',
-    }[status];
-
-    const handleClick = () => data.onNodeClick?.(id);
-
-    return (
-        <>
-            {/* Target handle (top) */}
-            <Handle
-                type="target"
-                position={Position.Top}
-                style={{ background: colors.border, border: 'none', width: 6, height: 6 }}
-            />
-
-            <div
-                onClick={handleClick}
-                title={data.label as string}
-                style={{
-                    background: colors.bg,
-                    border: `${varStyle.borderWidth}px solid ${selected ? '#16a34a' : colors.border}`,
-                    borderRadius: variant === 'primary' ? '8px' : '6px',
-                    padding: variant === 'primary' ? '8px 16px' : '6px 12px',
-                    minWidth: varStyle.minWidth,
-                    maxWidth: 240,
-                    cursor: 'pointer',
-                    userSelect: 'none',
-                    boxShadow: selected ? '0 0 0 2px rgba(22,163,74,0.4), 0 4px 16px rgba(0,0,0,0.5)' : '0 2px 8px rgba(0,0,0,0.4)',
-                    transition: 'all 0.2s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    backdropFilter: 'blur(4px)',
-                }}
-            >
-                {variant === 'checklist' ? (
-                    <div style={{
-                        width: '16px', height: '16px', borderRadius: '4px',
-                        border: `1px solid ${status === 'done' ? '#16a34a' : '#525252'}`,
-                        background: status === 'done' ? '#16a34a' : 'transparent',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        flexShrink: 0,
-                    }}>
-                        {status === 'done' && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>}
-                    </div>
-                ) : statusIcon && (
-                    <span style={{ color: colors.text, fontSize: '0.75rem', flexShrink: 0 }}>
-                        {statusIcon}
-                    </span>
-                )}
-                <span style={{
-                    color: colors.text,
-                    fontSize: varStyle.fontSize,
-                    fontWeight: varStyle.fontWeight,
-                    lineHeight: 1.3,
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                }}>
-                    {data.label as string}
-                </span>
-            </div>
-
-            {/* Source handle (bottom) */}
-            <Handle
-                type="source"
-                position={Position.Bottom}
-                style={{ background: colors.border, border: 'none', width: 6, height: 6 }}
-            />
-        </>
-    );
-};
-
-const nodeTypes: NodeTypes = {
-    roadmapNode: RoadmapNode as unknown as NodeTypes['roadmapNode'],
-};
-
-/* ─────────────────────────────────────────────────────────────────────────── */
-/*  MAIN RENDERER COMPONENT                                                    */
-/* ─────────────────────────────────────────────────────────────────────────── */
-
-interface RoadmapRendererProps {
-    roadmapData: RoadmapData;
-    statusMap?: Record<string, NodeStatus>;
-    onNodeClick?: (nodeId: string) => void;
-    onStatusChange?: (nodeId: string, status: NodeStatus) => void;
-}
-
-/**
- * Interactive roadmap graph using React Flow.
- * Supports zoom/pan, node status coloring, and click callbacks.
- */
-const RoadmapRenderer: React.FC<RoadmapRendererProps> = ({
-    roadmapData,
-    statusMap = {},
-    onNodeClick,
-    onStatusChange,
-}) => {
-    const [menu, setMenu] = useState<{ x: number; y: number; nodeId: string } | null>(null);
-    /* Build React Flow nodes from JSON */
-    const initialNodes = useMemo<Node[]>(() =>
-        roadmapData.nodes.map(n => ({
-            id: n.id,
-            type: 'roadmapNode',
-            position: n.position,
-            data: {
-                label: n.label,
-                style: n.style,
-                status: statusMap[n.id] ?? 'default',
-                onNodeClick,
-            },
-            draggable: false,
-        })),
-        [roadmapData.nodes, statusMap, onNodeClick]
-    );
-
-    /* Build React Flow edges from JSON */
-    const initialEdges = useMemo<Edge[]>(() =>
-        roadmapData.edges.map(e => ({
-            id: e.id,
-            source: e.source,
-            target: e.target,
-            type: 'smoothstep',
-            style: { stroke: '#404040', strokeWidth: 1.5 },
-            markerEnd: {
-                type: MarkerType.ArrowClosed,
-                width: 12,
-                height: 12,
-                color: '#404040',
-            },
-        })),
-        [roadmapData.edges]
-    );
-
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, , onEdgesChange] = useEdgesState(initialEdges);
-
-    /* Update nodes when statusMap changes */
-    useEffect(() => {
-        setNodes((nds) =>
-            nds.map((node) => ({
-                ...node,
-                data: {
-                    ...node.data,
-                    status: statusMap[node.id] ?? 'default',
-                },
-            }))
-        );
-    }, [statusMap, setNodes]);
-
-    const onNodeContextMenu = useCallback(
-        (event: React.MouseEvent, node: Node) => {
-            event.preventDefault();
-            setMenu({
-                x: event.clientX,
-                y: event.clientY,
-                nodeId: node.id,
-            });
-        },
-        [setMenu]
-    );
-
-    const onConnect = useCallback((params: Connection) =>
-        console.log('connect', params), []);
-
-    return (
-        <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0 }}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onNodeContextMenu={onNodeContextMenu}
-                nodeTypes={nodeTypes}
-                fitView
-                fitViewOptions={{ padding: 0.15 }}
-                minZoom={0.2}
-                maxZoom={2}
-                proOptions={{ hideAttribution: true }}
-                style={{ background: '#0a0a0a' }}
-                onClick={() => setMenu(null)}
-            >
-                <Background
-                    variant={BackgroundVariant.Dots}
-                    gap={24}
-                    size={1}
-                    color="#262626"
-                />
-                <Controls
-                    style={{
-                        background: '#161616',
-                        border: '1px solid #262626',
-                        borderRadius: '8px',
-                    }}
-                />
-                <MiniMap
-                    style={{
-                        background: '#111',
-                        border: '1px solid #262626',
-                    }}
-                    nodeColor={n => {
-                        const status = (n.data as RoadmapNodeData).status ?? 'default';
-                        if (status === 'done') return '#16a34a';
-                        if (status === 'in-progress') return '#ca8a04';
-                        if (status === 'skipped') return '#525252';
-                        return '#262626';
-                    }}
-                    maskColor="rgba(0,0,0,0.5)"
-                />
-            </ReactFlow>
-
-            {menu && (
-                <ContextMenu
-                    x={menu.x}
-                    y={menu.y}
-                    nodeId={menu.nodeId}
-                    onClose={() => setMenu(null)}
-                    onStatusChange={(id, status) => onStatusChange?.(id, status)}
-                />
-            )}
+  return (
+    <>
+      <Handle type="target" position={Position.Top} style={{ background: 'var(--color-border)', width: 6, height: 6 }} />
+      <div
+        onClick={() => nodeData.onNodeClick?.(nodeData)}
+        className="glass-card"
+        style={{
+          minWidth: 160, maxWidth: 220, padding: '0.75rem 1rem',
+          borderRadius: 14, 
+          border: `1.5px solid ${statusBorder}`,
+          background: nodeData.status === 'done' ? 'rgba(16,185,129,0.1)' : 'rgba(15,20,25,0.7)',
+          cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+          boxShadow: nodeData.status === 'done' ? '0 0 20px rgba(16,185,129,0.25)' : '0 4px 15px rgba(0,0,0,0.4)',
+          opacity: nodeData.status === 'skipped' ? 0.4 : 1,
+        }}
+      >
+        {/* Type Icon/Badge */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+          <span style={{
+            fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em',
+            color: typeStyle.text, padding: '2px 6px', borderRadius: 4, background: typeStyle.bg, border: `1px solid ${typeStyle.border}`
+          }}>{nodeData.type}</span>
+          
+          <div style={{ display: 'flex', gap: '4px' }}>
+            {nodeData.status === 'done' && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981' }} />}
+            {nodeData.status === 'in_progress' && <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f59e0b' }} />}
+          </div>
         </div>
-    );
-};
 
-export default RoadmapRenderer;
+        {/* Label */}
+        <div style={{
+          fontSize: '0.9375rem', fontWeight: 700, color: 'var(--color-text-primary)',
+          lineHeight: 1.3, textAlign: 'center', letterSpacing: '-0.02em',
+          textDecoration: nodeData.status === 'skipped' ? 'line-through' : 'none'
+        }}>{nodeData.label}</div>
+
+        {/* Priority indicator */}
+        {nodeData.priority === 'essential' && (
+          <div style={{ marginTop: '0.5rem', display: 'flex', justifyContent: 'center' }}>
+            <span style={{ fontSize: '0.55rem', color: '#ef4444', fontWeight: 900, background: 'rgba(239,68,68,0.1)', padding: '1px 5px', borderRadius: 4, letterSpacing: '0.05em' }}>CRITICAL</span>
+          </div>
+        )}
+      </div>
+      <Handle type="source" position={Position.Bottom} style={{ background: 'var(--color-border)', width: 6, height: 6 }} />
+    </>
+  );
+}
+
+const nodeTypes = { roadmapNode: RoadmapNode };
+
+// ─── Node Detail Sidebar ──────────────────────────────────────────────────────
+function NodeSidebar({ node, onClose, onStatusChange, progress }: {
+  node: any; onClose: () => void; onStatusChange: (nodeId: string, status: string) => void; progress: Record<string, string>
+}) {
+  const currentStatus = progress[node.id] || 'not_started';
+  const [saving, setSaving] = useState(false);
+
+  const handleStatusChange = async (status: string) => {
+    setSaving(true);
+    onStatusChange(node.id, status);
+    setSaving(false);
+  };
+
+  const statusButtons = [
+    { value: 'not_started', label: '○ Not Started', color: '#525252' },
+    { value: 'in_progress', label: '⟳ In Progress', color: '#eab308' },
+    { value: 'done',        label: '✓ Done',        color: '#22c55e' },
+    { value: 'skipped',     label: '↷ Skip',        color: '#737373' },
+  ];
+
+  const resourceIcons: Record<string, string> = { article: '📄', video: '🎥', course: '🎓', docs: '📚' };
+
+  return (
+    <div style={{
+      position: 'absolute', top: 0, right: 0, width: 360, height: '100%',
+      background: 'var(--color-bg-card)', borderLeft: '1px solid var(--color-border)',
+      zIndex: 20, display: 'flex', flexDirection: 'column', animation: 'slideRight 0.25s ease',
+      overflowY: 'auto'
+    }}>
+      <style>{`@keyframes slideRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }`}</style>
+
+      {/* Header */}
+      <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
+        <div>
+          <span style={{
+            fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em',
+            color: TYPE_COLORS[node.type]?.text || '#93c5fd', padding: '2px 8px', borderRadius: 4,
+            background: TYPE_COLORS[node.type]?.bg || 'transparent'
+          }}>{node.type}</span>
+          <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, color: 'var(--color-text-primary)', marginTop: '0.5rem', lineHeight: 1.3 }}>{node.label}</h3>
+        </div>
+        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', fontSize: '1.25rem', padding: '0.25rem' }}>×</button>
+      </div>
+
+      {/* Body */}
+      <div style={{ flex: 1, padding: '1.25rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        {/* Why this matters */}
+        {node.whyThisMatters && (
+          <div style={{ background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.2)', borderRadius: 8, padding: '0.875rem 1rem' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-green-light)', marginBottom: '0.375rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Why this matters for you</div>
+            <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.6, margin: 0 }}>{node.whyThisMatters}</p>
+          </div>
+        )}
+
+        {/* Estimate */}
+        {node.estimatedHours && (
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <div style={{ background: 'var(--color-bg-elevated)', borderRadius: 8, padding: '0.625rem 0.875rem', flex: 1, textAlign: 'center' }}>
+              <div style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{node.estimatedHours}h</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Estimated hours</div>
+            </div>
+            {node.priority && (
+              <div style={{ background: 'var(--color-bg-elevated)', borderRadius: 8, padding: '0.625rem 0.875rem', flex: 1, textAlign: 'center' }}>
+                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: node.priority === 'essential' ? '#f87171' : node.priority === 'recommended' ? '#fcd34d' : '#9ca3af', textTransform: 'capitalize' }}>{node.priority}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Priority</div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Resources */}
+        {node.resources && node.resources.length > 0 && (
+          <div>
+            <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Resources</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {node.resources.map((r: any, i: number) => (
+                <a key={i} href={r.url} target="_blank" rel="noopener noreferrer" style={{
+                  display: 'flex', alignItems: 'center', gap: '0.625rem', padding: '0.625rem 0.875rem',
+                  background: 'var(--color-bg-elevated)', borderRadius: 8, textDecoration: 'none',
+                  border: '1px solid var(--color-border)', transition: 'border-color 0.15s'
+                }}>
+                  <span style={{ fontSize: '1rem' }}>{resourceIcons[r.type] || '🔗'}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-primary)', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'capitalize' }}>{r.type}</div>
+                  </div>
+                  <span style={{
+                    fontSize: '0.65rem', fontWeight: 600, padding: '2px 6px', borderRadius: 4,
+                    background: r.isFree ? 'var(--color-green-bg)' : 'rgba(202,138,4,0.1)',
+                    color: r.isFree ? 'var(--color-green-light)' : '#fcd34d'
+                  }}>{r.isFree ? 'FREE' : 'PAID'}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Progress Buttons */}
+      <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--color-border)' }}>
+        <div style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: '0.625rem' }}>Mark progress:</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+          {statusButtons.map(btn => (
+            <button key={btn.value} onClick={() => handleStatusChange(btn.value)} disabled={saving} style={{
+              padding: '0.5rem 0.75rem', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit',
+              fontSize: '0.8125rem', fontWeight: 500, transition: 'all 0.15s',
+              border: `2px solid ${currentStatus === btn.value ? btn.color : 'var(--color-border)'}`,
+              background: currentStatus === btn.value ? `${btn.color}20` : 'transparent',
+              color: currentStatus === btn.value ? btn.color : 'var(--color-text-muted)'
+            }}>{btn.label}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── RoadmapRenderer ──────────────────────────────────────────────────────────
+interface RoadmapRendererProps {
+  roadmapId: string;
+  roadmapType?: 'prebuilt' | 'personalized' | 'custom';
+  initialNodes: Node[];
+  initialEdges: Edge[];
+  token?: string;
+}
+
+function RoadmapRendererInner({ roadmapId, roadmapType = 'prebuilt', initialNodes, initialEdges, token }: RoadmapRendererProps) {
+  const [selectedNode, setSelectedNode] = useState<any>(null);
+  const [progress, setProgress] = useState<Record<string, string>>({});
+
+  // Convert API nodes to React Flow format
+  const rfNodes: Node[] = initialNodes.map(n => ({
+    id: (n as any).id,
+    type: 'roadmapNode',
+    position: (n as any).position || { x: 0, y: 0 },
+    data: {
+      ...(n as any),
+      status: progress[(n as any).id] || 'not_started',
+      onNodeClick: (data: any) => setSelectedNode(data),
+    },
+  }));
+
+  const rfEdges: Edge[] = initialEdges.map(e => ({
+    id: (e as any).id || `${(e as any).source}-${(e as any).target}`,
+    source: (e as any).source,
+    target: (e as any).target,
+    type: 'smoothstep',
+    style: { stroke: '#404040', strokeWidth: 2 },
+    markerEnd: { type: MarkerType.ArrowClosed, color: '#404040' },
+  }));
+
+  const [nodes, , onNodesChange] = useNodesState(rfNodes);
+  const [edges, , onEdgesChange] = useEdgesState(rfEdges);
+
+  const handleStatusChange = useCallback(async (nodeId: string, status: string) => {
+    setProgress(prev => ({ ...prev, [nodeId]: status }));
+    if (token) {
+      try {
+        await api.updateProgress({ roadmap_id: roadmapId, roadmap_type: roadmapType, node_id: nodeId, status }, token);
+      } catch (e) {
+        console.error('Failed to save progress', e);
+      }
+    }
+  }, [roadmapId, roadmapType, token]);
+
+  // Progress stats
+  const totalNodes = nodes.filter(n => n.type === 'roadmapNode').length;
+  const doneCount = Object.values(progress).filter(s => s === 'done').length;
+  const pct = totalNodes > 0 ? Math.round((doneCount / totalNodes) * 100) : 0;
+
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      {/* Progress Bar */}
+      <div style={{
+        position: 'absolute', top: 12, left: 12, zIndex: 10,
+        background: 'var(--color-bg-card)', border: '1px solid var(--color-border)',
+        borderRadius: 8, padding: '0.5rem 0.875rem', minWidth: 200,
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.375rem', fontSize: '0.8125rem' }}>
+          <span style={{ color: 'var(--color-text-secondary)', fontWeight: 500 }}>Progress</span>
+          <span style={{ color: 'var(--color-text-primary)', fontWeight: 700 }}>{doneCount}/{totalNodes} ({pct}%)</span>
+        </div>
+        <div style={{ width: '100%', height: 4, background: 'var(--color-border)', borderRadius: 999 }}>
+          <div style={{ width: `${pct}%`, height: '100%', background: 'var(--color-accent)', borderRadius: 999, transition: 'width 0.4s ease' }} />
+        </div>
+      </div>
+
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        fitView
+        fitViewOptions={{ padding: 0.2 }}
+        style={{ background: 'var(--color-bg-primary)' }}
+      >
+        <Background color="#262626" gap={20} />
+        <Controls style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }} />
+        <MiniMap
+          nodeColor={(n) => {
+            const st = progress[n.id] || 'not_started';
+            if (st === 'done') return '#22c55e';
+            if (st === 'in_progress') return '#eab308';
+            return '#404040';
+          }}
+          style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)' }}
+        />
+      </ReactFlow>
+
+      {/* Node Detail Sidebar */}
+      {selectedNode && (
+        <NodeSidebar
+          node={selectedNode}
+          onClose={() => setSelectedNode(null)}
+          onStatusChange={handleStatusChange}
+          progress={progress}
+        />
+      )}
+    </div>
+  );
+}
+
+export default function RoadmapRenderer(props: RoadmapRendererProps) {
+  return (
+    <ReactFlowProvider>
+      <RoadmapRendererInner {...props} />
+    </ReactFlowProvider>
+  );
+}

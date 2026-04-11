@@ -136,27 +136,29 @@ router.delete('/:slug', protect, async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-    // POST /api/teams/:slug/onboarding (add step to onboarding plan)
-    router.post('/:slug/onboarding', protect, isTeamAdmin, async (req, res) => {
-        try {
-            const { nodeId, roadmapId, title } = req.body;
-            req.team.onboardingPlan.push({ nodeId, roadmapId, title });
-            await req.team.save();
-            res.json(req.team.onboardingPlan);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    });
+});
 
-    // DELETE /api/teams/:slug/onboarding/:nodeId (remove step)
-    router.delete('/:slug/onboarding/:nodeId', protect, isTeamAdmin, async (req, res) => {
-        try {
-            req.team.onboardingPlan = req.team.onboardingPlan.filter(step => step.nodeId !== req.params.nodeId);
-            await req.team.save();
-            res.json(req.team.onboardingPlan);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    });
+// POST /api/teams/:slug/onboarding (add step to onboarding plan)
+router.post('/:slug/onboarding', protect, isTeamAdmin, async (req, res) => {
+    try {
+        const { nodeId, roadmapId, title } = req.body;
+        req.team.onboardingPlan.push({ nodeId, roadmapId, title });
+        await req.team.save();
+        res.json(req.team.onboardingPlan);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-    module.exports = router;
+// DELETE /api/teams/:slug/onboarding/:nodeId (remove step)
+router.delete('/:slug/onboarding/:nodeId', protect, isTeamAdmin, async (req, res) => {
+    try {
+        req.team.onboardingPlan = req.team.onboardingPlan.filter(step => step.nodeId !== req.params.nodeId);
+        await req.team.save();
+        res.json(req.team.onboardingPlan);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+module.exports = router;

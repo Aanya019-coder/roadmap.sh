@@ -1,7 +1,7 @@
 const express = require('express');
 const UserProgress = require('../models/UserProgress');
 const { protect } = require('./auth');
-const mongoose = require('mongoose');
+const mongoose = require('../models/mock-mongoose');
 
 const router = express.Router();
 

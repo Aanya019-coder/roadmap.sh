@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Dashboard" description="Your personalized learning dashboard">
+  <div id="dashboard-root"></div>
+  <script>
+    import { mountDashboard } from '../components/dashboard/Dashboard';
+    mountDashboard(document.getElementById('dashboard-root')!);
+  </script>
+</Layout>

@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="Your Personalized Roadmap" description="AI-generated learning path built just for you.">
+  <div style="background:var(--color-bg-secondary);border-bottom:1px solid var(--color-border);padding:1.5rem 0">
+    <div class="container">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <span class="badge badge-green" style="margin-bottom:0.5rem">✨ Personalized Roadmap</span>
+          <h1 id="roadmap-title" style="font-size:1.875rem;font-weight:800;color:var(--color-text-primary);margin-bottom:0.25rem">Generating...</h1>
+          <p id="roadmap-desc" style="color:var(--color-text-secondary);max-width:600px;line-height:1.6;font-size:0.9375rem">Please wait while we load your custom path.</p>
+        </div>
+        <div style="display:flex;gap:0.75rem">
+          <a href="/onboarding" class="btn btn-secondary" style="text-decoration:none">🔄 Reset & Regenerate</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="personal-roadmap-container" style="height:calc(100vh - 180px);width:100%;position:relative;background:var(--color-bg-primary)">
+    <div id="loader" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center">
+      <div class="spinner" style="width:40px;height:40px;border:4px solid var(--color-border);border-top-color:var(--color-accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 1rem"></div>
+      <p style="color:var(--color-text-secondary)">Parsing your custom learning path...</p>
+    </div>
+  </div>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+
+  <script>
+    import { createRoot } from 'react-dom/client';
+    import RoadmapRenderer from '../../components/roadmap/RoadmapRenderer';
+    import { supabase } from '../../lib/supabase';
+    import { api } from '../../lib/api';
+    import React from 'react';
+
+    (async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { window.location.href = '/login'; return; }
+
+      const resp = await api.getPersonalizedRoadmap(session.access_token);
+      if (!resp.success || !resp.data) {
+        window.location.href = '/onboarding';
+        return;
+      }
+
+      const roadmap = resp.data.roadmap_data;
+      document.getElementById('roadmap-title')!.textContent = roadmap.title;
+      document.getElementById('roadmap-desc')!.textContent = roadmap.description;
+      document.getElementById('loader')!.style.display = 'none';
+
+      // Transform flattened AI structure to React Flow nodes if needed
+      // Our AI route returns phases. We need to layout them vertically.
+      const nodes: any[] = [];
+      const edges: any[] = [];
+      let currentY = 50;
+
+      roadmap.phases.forEach((phase: any, pIdx: number) => {
+        // Phase title node
+        const phaseId = `phase-${pIdx}`;
+        nodes.push({
+          id: phaseId,
+          type: 'roadmapNode',
+          position: { x: 400, y: currentY },
+          data: { label: phase.title, type: 'milestone', isPhase: true }
+        });
+        currentY += 120;
+
+        phase.nodes.forEach((node: any, nIdx: number) => {
+           nodes.push({
+             id: node.id,
+             type: 'roadmapNode',
+             position: { x: 400 + (nIdx % 2 === 0 ? -120 : 120), y: currentY },
+             data: { ...node }
+           });
+           edges.push({ id: `e-${phaseId}-${node.id}`, source: phaseId, target: node.id });
+           currentY += 100;
+        });
+        
+        currentY += 50;
+      });
+
+      const root = createRoot(document.getElementById('personal-roadmap-container')!);
+      root.render(
+        React.createElement(RoadmapRenderer, {
+          roadmapId: 'personalized',
+          roadmapType: 'personalized',
+          initialNodes: nodes,
+          initialEdges: edges,
+          token: session.access_token,
+        })
+      );
+    })();
+  </script>
+</Layout>

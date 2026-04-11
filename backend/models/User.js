@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('./mock-mongoose');
 
 const providerSchema = new mongoose.Schema({
     provider: String,

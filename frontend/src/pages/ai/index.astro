@@ -1,0 +1,10 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="AI Tutor" description="Get personalized developer guidance from our AI tutor powered by Gemini">
+  <div id="ai-root"></div>
+  <script>
+    import { mountAiTutor } from '../../components/ai/AiTutor';
+    mountAiTutor(document.getElementById('ai-root')!);
+  </script>
+</Layout>
