@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="Privacy Policy" description="Read the Privacy Policy for roadmap.sh.">
+  <Navbar client:load />
+
+  <main class="max-w-[800px] mx-auto px-4 py-16">
+    <article class="prose prose-slate">
+      <h1 class="text-3xl font-extrabold text-white mb-6">Privacy Policy</h1>
+      <p class="text-sm text-text-secondary mb-4">Last Updated: June 1, 2026</p>
+      
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        At roadmap.sh, we care about the privacy of our visitors and users. This Privacy Policy describes how we collect, store, and use your personal information.
+      </p>
+
+      <h2 class="text-lg font-bold text-white mb-4">1. Information We Collect</h2>
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        When you register for an account, we collect your email address, name, and GitHub OAuth credentials (if configured). We also store your roadmap progress status and submitted project solutions.
+      </p>
+
+      <h2 class="text-lg font-bold text-white mb-4">2. Cookies and Storage</h2>
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        We use cookies and localStorage to persist your authentication session and local roadmap progress for guests.
+      </p>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>

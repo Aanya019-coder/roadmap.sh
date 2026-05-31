@@ -1,0 +1,21 @@
+{
+  "id": "portfolio",
+  "title": "Personal Portfolio",
+  "difficulty": "beginner",
+  "category": "Frontend",
+  "description": "Create a responsive personal portfolio website to showcase your skills, projects, and contact information. This is a must-have project for any developer looking to display their work.",
+  "requirements": [
+    "Build using clean HTML, CSS and JS",
+    "Ensure it is fully responsive and mobile-friendly",
+    "Include a navigation bar, hero section, projects grid, skills list, and contact form",
+    "Deploy to GitHub Pages, Netlify, or Vercel"
+  ],
+  "checklist": [
+    "Design wireframe and color palette",
+    "Implement base HTML layout",
+    "Add Tailwind or custom CSS styling",
+    "Optimize images and performance",
+    "Verify contact form validation",
+    "Publish online and verify build"
+  ]
+}

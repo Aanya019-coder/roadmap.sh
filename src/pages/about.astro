@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer.astro';
+import Accordion from '../components/ui/Accordion';
+import CommunityStats from '../components/home/CommunityStats.astro';
+
+const faqs = [
+  {
+    id: 'what-is',
+    title: 'What is roadmap.sh?',
+    content: 'roadmap.sh is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.'
+  },
+  {
+    id: 'how-created',
+    title: 'How are the roadmaps created?',
+    content: 'Roadmaps are community-driven, curated by domain experts, and constantly updated based on the latest industry standards, tools, and developer feedbacks.'
+  },
+  {
+    id: 'commercial-use',
+    title: 'Can I use these roadmaps for commercial purposes?',
+    content: 'Yes! The content is licensed under CC BY-NC-SA 4.0. You can share, adapt, and build upon the material for non-commercial purposes, provided you attribute roadmap.sh.'
+  },
+  {
+    id: 'open-source',
+    title: 'Is roadmap.sh open source?',
+    content: 'Yes, the codebase, design systems, and roadmap content are all open source on GitHub. You can contribute by opening pull requests or issues on our repositories.'
+  }
+];
+---
+
+<BaseLayout title="About" description="Find out what roadmap.sh is about, how roadmaps are created, and answers to frequently asked questions.">
+  <Navbar client:load />
+
+  <main class="max-w-[800px] mx-auto px-4 py-16">
+    <div class="mb-12 text-center">
+      <h1 class="text-3xl font-extrabold text-white mb-4">About roadmap.sh</h1>
+      <p class="text-text-secondary text-sm max-w-xl mx-auto">
+        roadmap.sh is the 6th most starred open-source project on GitHub, trusted by millions of developers worldwide.
+      </p>
+    </div>
+
+    {/* Accordion FAQs */}
+    <div class="space-y-8 bg-bg-secondary border border-border-default rounded-xl p-8 shadow-xl">
+      <h2 class="text-lg font-bold text-white mb-4">Frequently Asked Questions</h2>
+      <Accordion client:load items={faqs} allowMultiple={true} />
+    </div>
+  </main>
+
+  <CommunityStats />
+  <Footer />
+</BaseLayout>

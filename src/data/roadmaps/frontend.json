@@ -1,0 +1,122 @@
+{
+  "id": "frontend",
+  "title": "Frontend Developer",
+  "description": "Step by step guide to becoming a modern frontend developer in 2026",
+  "nodes": [
+    { "id": "internet", "type": "topic", "label": "Internet", "x": 400, "y": 20, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "How does the Internet Work?", "url": "https://cs.fyi/guide/how-does-internet-work" },
+      { "type": "article", "title": "The Internet Explained", "url": "https://www.vox.com/2014/6/16/18076282/the-internet" },
+      { "type": "video", "title": "How the Internet Works in 5 Minutes", "url": "https://www.youtube.com/watch?v=7_LPdttKXPc" }
+    ]},
+    { "id": "html", "type": "topic", "label": "HTML", "x": 400, "y": 120, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "W3Schools: Learn HTML", "url": "https://www.w3schools.com/html/" },
+      { "type": "article", "title": "MDN Web Docs: HTML", "url": "https://developer.mozilla.org/en-US/docs/Web/HTML" },
+      { "type": "video", "title": "HTML Full Course", "url": "https://www.youtube.com/watch?v=pQN-pnXPaVg" }
+    ]},
+    { "id": "css", "type": "topic", "label": "CSS", "x": 400, "y": 220, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "W3Schools: Learn CSS", "url": "https://www.w3schools.com/css/" },
+      { "type": "article", "title": "MDN Web Docs: CSS", "url": "https://developer.mozilla.org/en-US/docs/Web/CSS" },
+      { "type": "video", "title": "CSS Tutorial - Full Course", "url": "https://www.youtube.com/watch?v=1Rs2ND1ryYc" }
+    ]},
+    { "id": "javascript", "type": "topic", "label": "JavaScript", "x": 400, "y": 320, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "JavaScript.info", "url": "https://javascript.info/" },
+      { "type": "article", "title": "MDN JavaScript Guide", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" },
+      { "type": "video", "title": "JavaScript Full Course", "url": "https://www.youtube.com/watch?v=PkZNo7MFNFg" }
+    ]},
+    { "id": "version-control", "type": "topic", "label": "Version Control", "x": 400, "y": 420, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Git Handbook", "url": "https://guides.github.com/introduction/git-handbook/" },
+      { "type": "video", "title": "Git and GitHub for Beginners", "url": "https://www.youtube.com/watch?v=RGOj5yH7evk" }
+    ]},
+    { "id": "package-managers", "type": "topic", "label": "Package Managers", "x": 400, "y": 520, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "npm Documentation", "url": "https://docs.npmjs.com/" },
+      { "type": "article", "title": "Yarn Documentation", "url": "https://yarnpkg.com/getting-started" }
+    ]},
+    { "id": "react", "type": "topic", "label": "React", "x": 250, "y": 680, "width": 160, "height": 40, "style": "filled", "resources": [
+      { "type": "official", "title": "React Official Docs", "url": "https://react.dev/" },
+      { "type": "video", "title": "React Course for Beginners", "url": "https://www.youtube.com/watch?v=bMknfKXIFA8" }
+    ]},
+    { "id": "vue", "type": "topic", "label": "Vue.js", "x": 440, "y": 680, "width": 160, "height": 40, "style": "outline", "resources": [
+      { "type": "official", "title": "Vue.js Documentation", "url": "https://vuejs.org/" },
+      { "type": "video", "title": "Vue.js Course for Beginners", "url": "https://www.youtube.com/watch?v=FXpIoQ_rT_c" }
+    ]},
+    { "id": "angular", "type": "topic", "label": "Angular", "x": 630, "y": 680, "width": 160, "height": 40, "style": "outline", "resources": [
+      { "type": "official", "title": "Angular Documentation", "url": "https://angular.io/docs" },
+      { "type": "video", "title": "Angular Tutorial for Beginners", "url": "https://www.youtube.com/watch?v=k5E2AVpwsko" }
+    ]},
+    { "id": "css-frameworks", "type": "topic", "label": "CSS Frameworks", "x": 100, "y": 220, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Tailwind CSS", "url": "https://tailwindcss.com/" },
+      { "type": "article", "title": "Bootstrap", "url": "https://getbootstrap.com/" }
+    ]},
+    { "id": "css-architecture", "type": "topic", "label": "CSS Architecture", "x": 700, "y": 220, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "BEM Methodology", "url": "https://en.bem.info/methodology/" },
+      { "type": "article", "title": "CSS Modules", "url": "https://github.com/css-modules/css-modules" }
+    ]},
+    { "id": "css-preprocessors", "type": "topic", "label": "CSS Preprocessors", "x": 700, "y": 300, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Sass Documentation", "url": "https://sass-lang.com/documentation/" },
+      { "type": "article", "title": "PostCSS", "url": "https://postcss.org/" }
+    ]},
+    { "id": "typescript", "type": "topic", "label": "TypeScript", "x": 400, "y": 600, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "official", "title": "TypeScript Handbook", "url": "https://www.typescriptlang.org/docs/handbook/" },
+      { "type": "video", "title": "TypeScript Tutorial", "url": "https://www.youtube.com/watch?v=BwuLxPH8IDs" }
+    ]},
+    { "id": "testing", "type": "topic", "label": "Testing", "x": 400, "y": 780, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Jest Documentation", "url": "https://jestjs.io/" },
+      { "type": "article", "title": "Testing Library", "url": "https://testing-library.com/" },
+      { "type": "article", "title": "Cypress", "url": "https://www.cypress.io/" }
+    ]},
+    { "id": "web-security", "type": "topic", "label": "Web Security", "x": 100, "y": 780, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "OWASP Web Security Testing Guide", "url": "https://owasp.org/www-project-web-security-testing-guide/" },
+      { "type": "article", "title": "MDN Web Security", "url": "https://developer.mozilla.org/en-US/docs/Web/Security" }
+    ]},
+    { "id": "performance", "type": "topic", "label": "Performance", "x": 700, "y": 780, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Web Performance MDN", "url": "https://developer.mozilla.org/en-US/docs/Web/Performance" },
+      { "type": "article", "title": "Lighthouse", "url": "https://developer.chrome.com/docs/lighthouse/overview/" }
+    ]},
+    { "id": "build-tools", "type": "topic", "label": "Build Tools", "x": 100, "y": 520, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Vite", "url": "https://vitejs.dev/" },
+      { "type": "article", "title": "Webpack", "url": "https://webpack.js.org/" },
+      { "type": "article", "title": "esbuild", "url": "https://esbuild.github.io/" }
+    ]},
+    { "id": "ssr", "type": "topic", "label": "SSR / SSG", "x": 400, "y": 880, "width": 200, "height": 40, "style": "filled", "resources": [
+      { "type": "article", "title": "Next.js Documentation", "url": "https://nextjs.org/docs" },
+      { "type": "article", "title": "Astro Documentation", "url": "https://docs.astro.build/" },
+      { "type": "article", "title": "Nuxt.js Documentation", "url": "https://nuxt.com/" }
+    ]},
+    { "id": "graphql-client", "type": "topic", "label": "GraphQL", "x": 700, "y": 880, "width": 200, "height": 40, "style": "outline", "resources": [
+      { "type": "article", "title": "GraphQL Official", "url": "https://graphql.org/" },
+      { "type": "article", "title": "Apollo Client", "url": "https://www.apollographql.com/docs/react/" }
+    ]},
+    { "id": "pwa", "type": "topic", "label": "PWAs", "x": 100, "y": 880, "width": 200, "height": 40, "style": "outline", "resources": [
+      { "type": "article", "title": "Progressive Web Apps MDN", "url": "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps" },
+      { "type": "article", "title": "web.dev PWA Guide", "url": "https://web.dev/progressive-web-apps/" }
+    ]}
+  ],
+  "edges": [
+    { "from": "internet", "to": "html", "type": "solid" },
+    { "from": "html", "to": "css", "type": "solid" },
+    { "from": "css", "to": "javascript", "type": "solid" },
+    { "from": "javascript", "to": "version-control", "type": "solid" },
+    { "from": "version-control", "to": "package-managers", "type": "solid" },
+    { "from": "package-managers", "to": "typescript", "type": "solid" },
+    { "from": "typescript", "to": "react", "type": "solid" },
+    { "from": "typescript", "to": "vue", "type": "dashed" },
+    { "from": "typescript", "to": "angular", "type": "dashed" },
+    { "from": "css", "to": "css-frameworks", "type": "dashed" },
+    { "from": "css", "to": "css-architecture", "type": "dashed" },
+    { "from": "css-architecture", "to": "css-preprocessors", "type": "solid" },
+    { "from": "package-managers", "to": "build-tools", "type": "dashed" },
+    { "from": "react", "to": "testing", "type": "solid" },
+    { "from": "testing", "to": "ssr", "type": "solid" },
+    { "from": "testing", "to": "web-security", "type": "dashed" },
+    { "from": "testing", "to": "performance", "type": "dashed" },
+    { "from": "ssr", "to": "graphql-client", "type": "dashed" },
+    { "from": "ssr", "to": "pwa", "type": "dashed" }
+  ],
+  "groups": [
+    { "id": "basics-group", "label": "Basics", "nodeIds": ["internet", "html", "css", "javascript"], "color": "#0f172a" },
+    { "id": "tooling-group", "label": "Tooling", "nodeIds": ["version-control", "package-managers", "build-tools"], "color": "#0f172a" },
+    { "id": "frameworks-group", "label": "Frameworks", "nodeIds": ["react", "vue", "angular", "typescript"], "color": "#0f172a" },
+    { "id": "advanced-group", "label": "Advanced", "nodeIds": ["testing", "ssr", "web-security", "performance", "graphql-client", "pwa"], "color": "#0f172a" },
+    { "id": "css-deep-group", "label": "CSS Deep Dive", "nodeIds": ["css-frameworks", "css-architecture", "css-preprocessors"], "color": "#0f172a" }
+  ]
+}

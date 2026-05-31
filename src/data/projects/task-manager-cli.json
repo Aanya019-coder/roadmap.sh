@@ -1,0 +1,20 @@
+{
+  "id": "task-manager-cli",
+  "title": "Task Manager CLI",
+  "difficulty": "beginner",
+  "category": "Backend",
+  "description": "Create a command-line interface (CLI) application to manage tasks. Users should be able to add, delete, update, and list tasks from the terminal. Data should persist locally in a file.",
+  "requirements": [
+    "Build using Node.js, Python, or Go",
+    "Persist task data locally using a JSON or text file",
+    "Support commands: add, delete, list, update-status",
+    "Gracefully handle invalid commands and empty values"
+  ],
+  "checklist": [
+    "Initialize project repository and install minimal dependencies",
+    "Implement argument parsing for commands",
+    "Implement file read and write operations for task persistence",
+    "Implement command actions: add, delete, list",
+    "Verify task updates persist correctly across command runs"
+  ]
+}

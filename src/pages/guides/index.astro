@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/layout/Navbar';
+import Footer from '../../components/layout/Footer.astro';
+import Badge from '../../components/ui/Badge';
+import CommunityStats from '../../components/home/CommunityStats.astro';
+
+// Load all markdown files in src/data/guides
+const guides = await Astro.glob('../../data/guides/*.md');
+
+// Sort by date descending
+const sortedGuides = guides.sort((a, b) => {
+  return new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime();
+});
+---
+
+<BaseLayout title="Guides and Articles" description="Detailed guides and articles explaining backend, frontend, system design, and computer science concepts.">
+  <Navbar client:load />
+
+  <main class="max-w-[800px] mx-auto px-4 py-12">
+    <div class="mb-12">
+      <h1 class="text-3xl font-extrabold text-white mb-4">Guides & Articles</h1>
+      <p class="text-text-secondary text-sm">
+        Deep dives into complex programming, system design, and software engineering topics. Hand-crafted articles explaining concepts with clarity.
+      </p>
+    </div>
+
+    {/* Guides List */}
+    <div class="space-y-6">
+      {sortedGuides.map((guide) => {
+        const slug = guide.file.split('/').pop().replace('.md', '');
+        return (
+          <a 
+            href={`/guides/${slug}`}
+            class="block p-6 rounded-xl bg-bg-secondary border border-border-default hover:border-border-hover transition-all duration-200 hover:-translate-y-0.5"
+          >
+            <div class="flex items-center gap-2.5 mb-3">
+              <Badge variant={guide.frontmatter.type === 'new' ? 'new' : 'textual'}>
+                {guide.frontmatter.type}
+              </Badge>
+              <span class="text-xs text-text-muted">{guide.frontmatter.date}</span>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-2 group-hover:text-accent-yellow transition-colors">
+              {guide.frontmatter.title}
+            </h2>
+            <p class="text-sm text-text-secondary leading-relaxed">
+              {guide.frontmatter.description}
+            </p>
+          </a>
+        );
+      })}
+    </div>
+  </main>
+
+  <CommunityStats />
+  <Footer />
+</BaseLayout>

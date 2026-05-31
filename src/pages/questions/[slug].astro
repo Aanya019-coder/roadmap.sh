@@ -1,0 +1,69 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../../components/layout/Navbar';
+import Footer from '../../components/layout/Footer.astro';
+import Accordion from '../../components/ui/Accordion';
+import CommunityStats from '../../components/home/CommunityStats.astro';
+
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'how-to-become-frontend-developer' } },
+    { params: { slug: 'is-backend-harder-than-frontend' } },
+    { params: { slug: 'which-language-to-learn-first' } }
+  ];
+}
+
+const { slug } = Astro.params;
+
+const questionData: Record<string, { title: string, desc: string, qa: Array<{ id: string, title: string, content: string }> }> = {
+  'how-to-become-frontend-developer': {
+    title: 'How to Become a Frontend Developer',
+    desc: 'Common questions and answers regarding starting your frontend engineering journey.',
+    qa: [
+      { id: '1', title: 'What skills are absolute prerequisites?', content: 'HTML, CSS, and basic JavaScript are absolute prerequisites. You must understand how to style layouts and add basic interactivity before learning frameworks.' },
+      { id: '2', title: 'Which frontend framework should I learn first?', content: 'React is highly recommended because of its massive market share, but Vue is also excellent for beginners due to its simplicity.' }
+    ]
+  },
+  'is-backend-harder-than-frontend': {
+    title: 'Is Backend Harder Than Frontend?',
+    desc: 'Comparing cognitive loads, system architectures, and learning curves of backend and frontend engineering.',
+    qa: [
+      { id: '1', title: 'What makes backend development challenging?', content: 'Backend involves databases, security, scalability, API design, caching, and data integrity, which require careful architectural planning.' },
+      { id: '2', title: 'Which is better for finding a junior job?', content: 'Both fields have high demand. Frontend often allows you to demonstrate visual proof of your skills quickly, while backend showcases logical problem-solving.' }
+    ]
+  },
+  'which-language-to-learn-first': {
+    title: 'Which Programming Language to Learn First?',
+    desc: 'Navigating programming languages as a beginner developer.',
+    qa: [
+      { id: '1', title: 'Why is JavaScript recommended?', content: 'JavaScript can be run directly in any web browser and is used for both frontend (React, Vue) and backend (Node.js), making it highly versatile.' },
+      { id: '2', title: 'Is Python better for absolute beginners?', content: 'Yes, Python has a highly readable syntax that closely resembles English, making it great for learning fundamental programming concepts.' }
+    ]
+  }
+};
+
+const currentQuestion = questionData[slug] || questionData['how-to-become-frontend-developer'];
+---
+
+<BaseLayout title={currentQuestion.title} description={currentQuestion.desc}>
+  <Navbar client:load />
+
+  <main class="max-w-[800px] mx-auto px-4 py-16">
+    <div class="mb-12">
+      <div class="mb-4">
+        <a href="/roadmaps" class="text-xs text-text-muted hover:text-text-secondary transition-colors">
+          ← All Questions
+        </a>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white mb-4">{currentQuestion.title}</h1>
+      <p class="text-text-secondary text-sm">{currentQuestion.desc}</p>
+    </div>
+
+    <div class="bg-bg-secondary border border-border-default rounded-xl p-8 shadow-xl">
+      <Accordion client:load items={currentQuestion.qa} allowMultiple={true} />
+    </div>
+  </main>
+
+  <CommunityStats />
+  <Footer />
+</BaseLayout>

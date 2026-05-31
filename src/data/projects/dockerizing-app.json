@@ -1,0 +1,20 @@
+{
+  "id": "dockerizing-app",
+  "title": "Dockerizing a Multi-Container Application",
+  "difficulty": "intermediate",
+  "category": "DevOps",
+  "description": "Package a web application consisting of a frontend interface, a backend API, and a database into Docker containers and orchestrate them using Docker Compose.",
+  "requirements": [
+    "Write optimized Dockerfiles for both frontend and backend services",
+    "Configure container networking and volume mounts for the database",
+    "Use environment variables to connect frontend, backend, and db",
+    "Orchestrate startup order and auto-restarts with docker-compose.yml"
+  ],
+  "checklist": [
+    "Create optimized multi-stage Dockerfile for the frontend",
+    "Create Dockerfile for the backend API server",
+    "Set up docker-compose.yml defining frontend, backend, and database",
+    "Implement environment files (.env) to configure credentials",
+    "Run docker-compose up and verify application communication"
+  ]
+}

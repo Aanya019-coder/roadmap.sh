@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer.astro';
+import AuthForms from '../components/auth/AuthForms';
+---
+
+<BaseLayout title="Sign Up" description="Create your free roadmap.sh account to save your learning progress, start projects, and track achievements.">
+  <Navbar client:load />
+
+  <main class="min-h-[calc(100vh-250px)] flex items-center justify-center py-12 px-4">
+    <AuthForms client:load initialMode="signup" />
+  </main>
+
+  <Footer />
+</BaseLayout>

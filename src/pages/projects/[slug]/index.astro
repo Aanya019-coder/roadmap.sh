@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Navbar from '../../../components/layout/Navbar';
+import Footer from '../../../components/layout/Footer.astro';
+import ProjectInteractive from '../../../components/project/ProjectInteractive';
+import CommunityStats from '../../../components/home/CommunityStats.astro';
+
+export async function getStaticPaths() {
+  const projectFiles = import.meta.glob('../../../data/projects/*.json', { eager: true });
+  return Object.keys(projectFiles).map(file => {
+    const filename = file.split('/').pop().replace('.json', '');
+    return { params: { slug: filename } };
+  });
+}
+
+const { slug } = Astro.params;
+
+// Load the specific project JSON
+const projectFiles = import.meta.glob('../../../data/projects/*.json', { eager: true });
+const matchedFile = Object.entries(projectFiles).find(([key]) => key.endsWith(`${slug}.json`));
+
+if (!matchedFile) {
+  return Astro.redirect('/404');
+}
+
+const project = (matchedFile[1] as any).default;
+---
+
+<BaseLayout title={project.title} description={project.description}>
+  <Navbar client:load />
+
+  <main class="max-w-[1280px] mx-auto px-4 py-12">
+    {/* Breadcrumbs */}
+    <div class="mb-6">
+      <a href="/projects" class="text-xs text-text-muted hover:text-text-secondary transition-colors">
+        ← All Projects
+      </a>
+    </div>
+
+    {/* Header */}
+    <div class="mb-10 border-b border-border-default pb-8">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class="px-2.5 py-0.5 text-xs font-semibold bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20 rounded-full">
+          {project.difficulty}
+        </span>
+        <span class="text-xs text-text-muted font-bold uppercase tracking-wider">{project.category}</span>
+      </div>
+      <h1 class="text-3xl font-extrabold text-white mb-4">{project.title}</h1>
+      <p class="text-sm text-text-secondary max-w-3xl leading-relaxed">{project.description}</p>
+    </div>
+
+    {/* Interactive sections */}
+    <ProjectInteractive 
+      client:load 
+      projectId={project.id} 
+      requirements={project.requirements} 
+      checklist={project.checklist} 
+    />
+  </main>
+
+  <CommunityStats />
+  <Footer />
+</BaseLayout>

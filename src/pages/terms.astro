@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="Terms of Service" description="Read the Terms of Service for using roadmap.sh.">
+  <Navbar client:load />
+
+  <main class="max-w-[800px] mx-auto px-4 py-16">
+    <article class="prose prose-slate">
+      <h1 class="text-3xl font-extrabold text-white mb-6">Terms of Service</h1>
+      <p class="text-sm text-text-secondary mb-4">Last Updated: June 1, 2026</p>
+      
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        Welcome to roadmap.sh. By accessing or using our website, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
+      </p>
+
+      <h2 class="text-lg font-bold text-white mb-4">1. Use of Content</h2>
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        All educational materials, roadmaps, checklists, and guides on roadmap.sh are licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
+      </p>
+
+      <h2 class="text-lg font-bold text-white mb-4">2. User Submissions</h2>
+      <p class="text-sm text-text-secondary leading-relaxed mb-6">
+        By submitting project solutions, code links, or feedback, you grant roadmap.sh a non-exclusive, worldwide, royalty-free license to use, display, and share your contributions on the platform.
+      </p>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>

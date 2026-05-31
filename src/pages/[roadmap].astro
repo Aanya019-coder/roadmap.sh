@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer.astro';
+import RoadmapPage from '../components/roadmap/RoadmapPage';
+import CommunityStats from '../components/home/CommunityStats.astro';
+import fs from 'fs';
+import path from 'path';
+
+export async function getStaticPaths() {
+  const roleSlugs = [
+    'frontend', 'backend', 'full-stack', 'devops', 'devsecops', 'data-analyst', 
+    'ai-engineer', 'ai-data-scientist', 'data-engineer', 'android', 'machine-learning', 
+    'postgresql', 'ios', 'blockchain', 'qa', 'software-architect', 'cyber-security', 
+    'ux-design', 'technical-writer', 'game-developer', 'server-side-game-developer', 
+    'mlops', 'product-manager', 'engineering-manager', 'developer-relations', 
+    'bi-analyst', 'network-engineer'
+  ];
+
+  const skillSlugs = [
+    'sql', 'computer-science', 'react', 'vue', 'angular', 'javascript', 'typescript', 
+    'nodejs', 'python', 'system-design', 'java', 'aspnet-core', 'api-design', 
+    'spring-boot', 'flutter', 'cpp', 'rust', 'golang', 'software-design-architecture', 
+    'graphql', 'react-native', 'design-system', 'prompt-engineering', 'mongodb', 
+    'linux', 'kubernetes', 'docker', 'aws', 'terraform', 'datastructures-and-algorithms', 
+    'redis', 'git-github', 'php', 'cloudflare', 'ai-red-teaming', 'ai-agents', 'nextjs', 
+    'code-review', 'kotlin', 'html', 'css', 'swift', 'shell', 'laravel', 'elasticsearch', 
+    'wordpress', 'django', 'ruby', 'ruby-on-rails', 'claude-code', 'vibe-coding', 
+    'scala', 'leetcode'
+  ];
+
+  const bestPracticesSlugs = [
+    'aws-best-practices', 'api-security-best-practices', 
+    'backend-performance-best-practices', 'frontend-performance-best-practices', 
+    'code-review-best-practices'
+  ];
+
+  const allSlugs = [...roleSlugs, ...skillSlugs, ...bestPracticesSlugs];
+
+  return allSlugs.map(slug => ({
+    params: { roadmap: slug }
+  }));
+}
+
+const { roadmap } = Astro.params;
+
+// Helper to format title
+const formatTitle = (slug: string) => {
+  if (slug === 'cpp') return 'C++';
+  if (slug === 'git-github') return 'Git & GitHub';
+  if (slug === 'nodejs') return 'Node.js';
+  if (slug === 'nextjs') return 'Next.js';
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+const title = formatTitle(roadmap);
+const description = `Learn ${title} step by step with this interactive developer roadmap in 2026.`;
+
+// Load data
+let nodes = [];
+let edges = [];
+let groups = [];
+
+const dataFilePath = path.join(process.cwd(), 'src', 'data', 'roadmaps', `${roadmap}.json`);
+
+if (fs.existsSync(dataFilePath)) {
+  try {
+    const data = JSON.parse(fs.readFileSync(dataFilePath, 'utf-8'));
+    nodes = data.nodes || [];
+    edges = data.edges || [];
+    groups = data.groups || [];
+  } catch (e) {
+    console.error(`Error loading roadmap data for ${roadmap}:`, e);
+  }
+}
+
+// Fallback representative layout if no JSON file exists
+if (nodes.length === 0) {
+  nodes = [
+    {
+      id: 'intro',
+      type: 'topic',
+      label: '1. Introduction to ' + title,
+      x: 400,
+      y: 40,
+      width: 240,
+      height: 40,
+      style: 'filled',
+      resources: [
+        { type: 'article', title: `What is ${title}?`, url: 'https://wikipedia.org/wiki/' + encodeURIComponent(title) },
+        { type: 'official', title: 'Official Website / Reference', url: '#' }
+      ]
+    },
+    {
+      id: 'fundamentals',
+      type: 'topic',
+      label: '2. Fundamentals & Basics',
+      x: 400,
+      y: 140,
+      width: 240,
+      height: 40,
+      style: 'filled',
+      resources: [
+        { type: 'article', title: 'Learn the Basics', url: '#' },
+        { type: 'video', title: 'Fundamentals Video Guide', url: '#' }
+      ]
+    },
+    {
+      id: 'intermediate',
+      type: 'topic',
+      label: '3. Intermediate Topics',
+      x: 400,
+      y: 240,
+      width: 240,
+      height: 40,
+      style: 'filled',
+      resources: [
+        { type: 'article', title: 'Intermediate Guide', url: '#' },
+        { type: 'course', title: 'Interactive Learning Path', url: '#' }
+      ]
+    },
+    {
+      id: 'advanced',
+      type: 'topic',
+      label: '4. Advanced Concepts',
+      x: 400,
+      y: 340,
+      width: 240,
+      height: 40,
+      style: 'filled',
+      resources: [
+        { type: 'article', title: 'Advanced Best Practices', url: '#' }
+      ]
+    },
+    {
+      id: 'projects',
+      type: 'topic',
+      label: '5. Hands-on Projects',
+      x: 400,
+      y: 440,
+      width: 240,
+      height: 40,
+      style: 'filled',
+      resources: [
+        { type: 'website', title: `Browse ${title} Projects`, url: `/${roadmap}/projects` }
+      ]
+    }
+  ];
+
+  edges = [
+    { from: 'intro', to: 'fundamentals', type: 'solid' },
+    { from: 'fundamentals', to: 'intermediate', type: 'solid' },
+    { from: 'intermediate', to: 'advanced', type: 'solid' },
+    { from: 'advanced', to: 'projects', type: 'solid' }
+  ];
+
+  groups = [
+    {
+      id: 'main-flow',
+      label: `${title} Learning Journey`,
+      nodeIds: ['intro', 'fundamentals', 'intermediate', 'advanced', 'projects']
+    }
+  ];
+}
+---
+
+<BaseLayout title={title} description={description}>
+  <Navbar client:load />
+  
+  <main class="py-6">
+    <RoadmapPage 
+      client:load
+      roadmapId={roadmap}
+      title={title}
+      description={description}
+      nodes={nodes}
+      edges={edges}
+      groups={groups}
+    />
+    
+    <!-- FAQ/Articles section below diagram -->
+    <section class="max-w-[1280px] mx-auto px-4 py-16 border-t border-border-default mt-12">
+      <h2 class="text-xl font-bold text-white mb-6">Frequently Asked Questions</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-sm font-semibold text-text-primary mb-2">How long does it take to learn {title}?</h3>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            It varies based on your background, but generally, it takes 2 to 4 weeks to grasp the fundamentals, and 2 to 6 months of active practice to become proficient enough to build real-world applications.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-sm font-semibold text-text-primary mb-2">What are the best resources for learning {title}?</h3>
+          <p class="text-xs text-text-secondary leading-relaxed">
+            We recommend checking the interactive nodes in the diagram above. Each node lists curated, community-approved articles, video tutorials, and official docs to guide your learning process.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <CommunityStats />
+  </main>
+  
+  <Footer />
+</BaseLayout>
